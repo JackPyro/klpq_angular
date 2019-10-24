@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "~8.2.11",
     "@angular/router": "~8.2.11",
     "flv.js": "^1.5.0",
+    "humanize": "^0.0.9",
+    "humanize-duration": "^3.21.0",
     "normalize.css": "^8.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

@@ -1,1 +1,51 @@
-<p>view-stream works!</p>
+<div class="bg">
+  <div class="navigation">
+    <span class="fas fa-arrow-circle-left back-button"></span>
+    <div class="channel-name">{{ stream }} channel</div>
+    <div class="stream-switch">
+      <a
+        [ngClass]="{
+          btn: true,
+          active: stats.main.isLive
+        }"
+        routerLink="/stream/main"
+        >MAIN</a
+      >
+      <a
+        [ngClass]="{
+          btn: true,
+          active: stats.kino.isLive
+        }"
+        routerLink="/stream/kino"
+        >KINO</a
+      >
+    </div>
+  </div>
+  <div class="main-area">
+    <div class="player-section">
+      <video id="player" controls></video>
+    </div>
+    <div class="chat-section"></div>
+    <div class="utility-section">
+      <div class="stats">
+        <div class="stat">
+          <span class="fas fa-users"></span>
+          <span> {{ stats[stream].viewers || 0 }}</span>
+        </div>
+        <div class="stat">
+          <span class="fas fa-signal"></span>
+          <span> {{ stats[stream].bitrate || 0 }}</span>
+        </div>
+        <div class="stat">
+          <span class="fas fa-clock"></span>
+          <span> {{ stats[stream].duration }}</span>
+        </div>
+        <div class="stat">
+          <span class="fas fa-hourglass-half"></span>
+          <span> {{ stats[stream].startTime | date: "medium" }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="under-chat-section"></div>
+  </div>
+</div>

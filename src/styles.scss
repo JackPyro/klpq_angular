@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:200,300,400,500,600,700&display=swap&subset=cyrillic-ext,latin-ext');
+
+* {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+
+body, html {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0
+}

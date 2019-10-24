@@ -1,0 +1,36 @@
+<div class="main-bg">
+  <div class="eye-wrapper">
+    <a routerLink="/stream">
+      <div id="eye">
+        <div id="iris"></div>
+      </div>
+    </a>
+  </div>
+  <div class="main-player">
+    <video id="player" controls></video>
+  </div>
+  <div class="buttons">
+    <a
+      routerLink="/stream/main"
+      [ngClass]="{
+        'channel-card': true,
+        active: stats.main.isLive,
+        'btn-main': true,
+        'btn-main-active': stats.main.isLive
+      }"
+    >
+      MAIN
+    </a>
+    <a
+      routerLink="/stream/main"
+      [ngClass]="{
+        'channel-card': true,
+        active: stats.kino.isLive,
+        'btn-kino': true,
+        'btn-kino-active': stats.kino.isLive
+      }"
+    >
+      KINO
+    </a>
+  </div>
+</div>

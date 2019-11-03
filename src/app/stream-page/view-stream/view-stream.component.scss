@@ -28,6 +28,7 @@
 .player-section {
   height: 720px;
   background-color: black;
+  grid-column: 1 / -1;
 }
 .channel-name {
   font-size: 2.5rem !important;

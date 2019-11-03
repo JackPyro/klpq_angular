@@ -1,6 +1,8 @@
 <div class="bg">
   <div class="navigation">
-    <span class="fas fa-arrow-circle-left back-button"></span>
+    <a routerLink="/stream">
+      <span class="fas fa-arrow-circle-left back-button"></span>
+    </a>
     <div class="channel-name">{{ stream }} channel</div>
     <div class="stream-switch">
       <a
@@ -25,24 +27,24 @@
     <div class="player-section">
       <video id="player" controls></video>
     </div>
-    <div class="chat-section"></div>
+    <!-- <div class="chat-section"></div> -->
     <div class="utility-section">
       <div class="stats">
-        <div class="stat">
+        <div class="stat" *ngIf="stats[stream].isLive">
           <span class="fas fa-users"></span>
           <span> {{ stats[stream].viewers || 0 }}</span>
         </div>
-        <div class="stat">
+        <div class="stat" *ngIf="stats[stream].isLive">
           <span class="fas fa-signal"></span>
           <span> {{ stats[stream].bitrate || 0 }}</span>
         </div>
-        <div class="stat">
+        <div class="stat" *ngIf="stats[stream].isLive">
           <span class="fas fa-clock"></span>
           <span> {{ stats[stream].duration }}</span>
         </div>
-        <div class="stat">
+        <div class="stat" *ngIf="stats[stream].isLive">
           <span class="fas fa-hourglass-half"></span>
-          <span> {{ stats[stream].startTime | date: "medium" }}</span>
+          <span> {{ stats[stream].startTime | date: "medium" || 0 }}</span>
         </div>
       </div>
     </div>

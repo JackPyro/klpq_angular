@@ -27,7 +27,9 @@
     <div class="player-section">
       <video id="player" controls></video>
     </div>
-    <!-- <div class="chat-section"></div> -->
+     <div class="chat-section">
+       <iframe width="100%" height="720" scrolling="no" frameborder="0" [src]="chat()"></iframe>
+     </div>
     <div class="utility-section">
       <div class="stats">
         <div class="stat" *ngIf="stats[stream].isLive">
@@ -44,10 +46,12 @@
         </div>
         <div class="stat" *ngIf="stats[stream].isLive">
           <span class="fas fa-hourglass-half"></span>
-          <span> {{ stats[stream].startTime | date: "medium" || 0 }}</span>
+          <span> {{ stats[stream].startTime | date: "shortTime"}}</span>
         </div>
       </div>
     </div>
-    <div class="under-chat-section"></div>
+    <div class="under-chat-section">
+      <a [href]="chat()" target="_blank" class="expand-chat"><i class="fas fa-external-link-alt"></i> Open chat</a>
+    </div>
   </div>
 </div>

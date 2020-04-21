@@ -32,9 +32,9 @@ export class ViewStreamComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initPlayer();
     this.route.params.subscribe(params => {
       this.stream = params.stream;
-      this.initPlayer();
     });
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {
       this.stats = stats;

@@ -10,16 +10,16 @@
           btn: true,
           active: stats.main.isLive
         }"
-        href="/stream/main"
-        >MAIN</a
+        routerLink="/stream/main"
+      >MAIN</a
       >
       <a
         [ngClass]="{
           btn: true,
           active: stats.kino.isLive
         }"
-        href="/stream/kino"
-        >KINO</a
+        routerLink="/stream/kino"
+      >KINO</a
       >
     </div>
   </div>
@@ -27,9 +27,9 @@
     <div class="player-section">
       <video id="player" controls></video>
     </div>
-     <div class="chat-section">
-       <iframe width="100%" height="720" scrolling="no" frameborder="0" [src]="chat()"></iframe>
-     </div>
+    <div class="chat-section" *ngIf="chatUrl">
+      <iframe width="100%" height="720" scrolling="no" frameborder="0" [src]="chatUrl"></iframe>
+    </div>
     <div class="utility-section">
       <div class="stats">
         <div class="stat" *ngIf="stats[stream].isLive">
@@ -50,8 +50,8 @@
         </div>
       </div>
     </div>
-    <div class="under-chat-section">
-      <a [href]="chat()" target="_blank" class="expand-chat"><i class="fas fa-external-link-alt"></i> Open chat</a>
+    <div class="under-chat-section" *ngIf="chatUrl">
+      <a [href]="chatUrl" target="_blank" class="expand-chat"><i class="fas fa-external-link-alt"></i> Open chat</a>
     </div>
   </div>
 </div>

@@ -1,17 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-import flv from "flv.js";
-import { html5 } from "../utils/channels";
-import { StreamstatService } from "../streamstat.service";
+import {Component, OnInit} from '@angular/core';
+import flv from 'flv.js';
+import {html5} from '../utils/channels';
+import {StreamstatService} from '../streamstat.service';
+
 @Component({
-  selector: "app-stream-page",
-  templateUrl: "./stream-page.component.html",
-  styleUrls: ["./stream-page.component.scss"]
+  selector: 'app-stream-page',
+  templateUrl: './stream-page.component.html',
+  styleUrls: ['./stream-page.component.scss'],
 })
 export class StreamPageComponent implements OnInit {
   stats = {
     main: {},
     kino: {},
-    dev: {}
+    dev: {},
   };
 
   subscription = null;
@@ -25,20 +26,20 @@ export class StreamPageComponent implements OnInit {
 
   ngOnInit() {
     if (flv.isSupported()) {
-      const videoElement = <HTMLMediaElement>document.getElementById("player");
+      const videoElement = document.getElementById('player') as HTMLMediaElement;
       const flvPlayer = flv.createPlayer(
         {
-          type: "flv",
+          type: 'flv',
           url: html5.main.link,
           cors: true,
-          isLive: true
+          isLive: true,
         },
         {
           isLive: true,
           enableWorker: false,
           enableStashBuffer: false,
-          fixAudioTimestampGap: false
-        }
+          fixAudioTimestampGap: false,
+        },
       );
       flvPlayer.attachMediaElement(videoElement);
       flvPlayer.load();

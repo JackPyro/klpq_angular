@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'stream',
     children: [
       {path: '', component: StreamPageComponent},
-      {path: ':stream', component: ViewStreamComponent},
+      {path: ':stream', component: ViewStreamComponent, pathMatch: 'full'},
     ],
   },
 ];

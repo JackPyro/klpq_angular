@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {StreamstatService} from 'src/app/streamstat.service';
 import {html5} from '../../utils/channels';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import flv from 'flv.js';
 
 const URL = 'https://widget.mibbit.com/?settings=38d6da09df7f92010527c3537e00d2e8&server=irc.mibbit.net%3A%2B6697&channel=%23';
@@ -12,7 +12,7 @@ const URL = 'https://widget.mibbit.com/?settings=38d6da09df7f92010527c3537e00d2e
   templateUrl: './view-stream.component.html',
   styleUrls: ['./view-stream.component.scss'],
 })
-export class ViewStreamComponent implements OnInit {
+export class ViewStreamComponent implements OnInit, OnDestroy {
   stream = 'main';
   stats = {
     main: {},
@@ -22,6 +22,7 @@ export class ViewStreamComponent implements OnInit {
 
   player = null;
   playerInit = false;
+  chatUrl: SafeResourceUrl;
 
   subscription = null;
 
@@ -35,23 +36,38 @@ export class ViewStreamComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.stream = params.stream;
+      this.playerInit = false;
       this.initPlayer();
+      this.getChatUrl();
     });
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {
       this.stats = stats;
     });
   }
 
-  chat() {
+  ngOnDestroy() {
+    if (this.player) {
+      this.chatUrl = '';
+      this.player.pause();
+      this.player.unload();
+    }
+  }
+
+  getChatUrl() {
     const url = `${URL}podkolpakom_${this.stream}`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.chatUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   initPlayer() {
+
     if (this.playerInit) {
       return;
     }
     if (flv.isSupported) {
+      if (this.player) {
+        this.player.pause();
+        this.player.unload();
+      }
       this.playerInit = true;
       const videoElement = document.getElementById('player') as HTMLMediaElement;
       this.player = flv.createPlayer(

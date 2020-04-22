@@ -69,19 +69,15 @@ export class ViewStreamComponent implements OnInit, OnDestroy {
         this.player.unload();
       }
       this.playerInit = true;
+
+      const url = html5[this.stream].link;
+
       const videoElement = document.getElementById('player') as HTMLMediaElement;
       this.player = flv.createPlayer(
         {
           type: 'flv',
-          url: html5[this.stream].link,
+          url,
           cors: true,
-          isLive: true,
-        },
-        {
-          isLive: true,
-          enableWorker: false,
-          enableStashBuffer: false,
-          fixAudioTimestampGap: false,
         },
       );
       this.player.attachMediaElement(videoElement);

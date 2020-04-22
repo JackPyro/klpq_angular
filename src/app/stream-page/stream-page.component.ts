@@ -27,18 +27,12 @@ export class StreamPageComponent implements OnInit {
   ngOnInit() {
     if (flv.isSupported()) {
       const videoElement = document.getElementById('player') as HTMLMediaElement;
+      const url = html5.main.link;
       const flvPlayer = flv.createPlayer(
         {
           type: 'flv',
-          url: html5.main.link,
+          url,
           cors: true,
-          isLive: true,
-        },
-        {
-          isLive: true,
-          enableWorker: false,
-          enableStashBuffer: false,
-          fixAudioTimestampGap: false,
         },
       );
       flvPlayer.attachMediaElement(videoElement);

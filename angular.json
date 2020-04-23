@@ -26,6 +26,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.scss",
+              "node_modules/angular-dropdown/styles.scss",
               "node_modules/normalize.css/normalize.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ]

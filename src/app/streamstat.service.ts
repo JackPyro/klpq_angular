@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {reduce, map} from 'rxjs/operators';
-import {interval, BehaviorSubject, of, merge, forkJoin} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {interval, BehaviorSubject} from 'rxjs';
 
 const url = name => `https://stats.klpq.men/api/channels/nms/live/${name}`;
-const channels = ['main', 'kino', 'dev'];
 import humanizeDuration from 'humanize-duration';
 
 const fixTime = duration =>
@@ -28,45 +27,67 @@ const fixTime = duration =>
     },
   });
 
+interface Stats {
+  duration: any;
+  viewers: any;
+  isLive: boolean;
+  startTime: any;
+  name: any;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class StreamstatService {
-  stats = {
-    main: {},
-    kino: {},
-    dev: {},
-  };
+  stats = {};
+
+  channels = {online: [], offline: []};
+  currentChannel = '';
 
   statsSubject = new BehaviorSubject(this.stats);
+  onlineChannels = new BehaviorSubject(this.channels);
 
   constructor(private http: HttpClient) {
     this.initService();
+    this.initOnlineChannelSearch();
   }
 
   initService() {
     const intevalSource = interval(2000);
-    intevalSource.subscribe(n => this.fetchStats());
+    intevalSource.subscribe(() => this.fetchStats(this.currentChannel));
   }
 
-  fetchStats() {
-    const sources = channels.map(channel => {
-      return this.http.get(url(channel)).pipe(map(resp => ({...resp, name: channel})));
-    });
+  setChannel(channel) {
+    this.stats = {};
+    this.currentChannel = channel;
+  }
 
-    forkJoin(...sources).pipe(
-      map(channelsArray => {
-        return channelsArray.reduce((acc, channel) => {
-          return {
-            ...acc,
-            [channel.name]: {
-              ...channel,
-              duration: fixTime(channel.duration),
-            },
-          };
-        }, {});
-      }),
-    ).subscribe(data => {
+  initOnlineChannelSearch() {
+    const invervalSource = interval(2000);
+    invervalSource.subscribe(() => this.fetchChannels());
+    return;
+  }
+
+  fetchChannels() {
+    const listUrl = 'https://stats.klpq.men/api/channels/list';
+    const source = this.http.get(listUrl);
+
+    source.subscribe((data: unknown) => {
+      this.channels.online = (data as { live: [] }).live.filter(item => !item && item !== null);
+      this.channels.offline = (data as { channels: [] }).channels.filter(item => !this.channels.online.includes(item));
+      this.onlineChannels.next(this.channels);
+    });
+  }
+
+  fetchStats(channel) {
+    if (!channel) {
+      this.stats = {};
+      return;
+    }
+
+    const source = this.http.get(url(channel)).pipe(map(resp => ({...resp, name: channel, duration: fixTime((resp as Stats).duration)})));
+
+    source.subscribe(data => {
       this.stats = data;
       this.statsSubject.next(data);
     });

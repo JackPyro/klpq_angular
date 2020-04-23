@@ -1210,6 +1210,13 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+angular-dropdown@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/angular-dropdown/-/angular-dropdown-0.5.5.tgz#8dffef74fa3bf9090071393c72c4bc142959bdf7"
+  integrity sha512-8NhhXOdLzaj3AiWFNHKIfiB4e8soNM5MK0OgU3IE817isBZQ4jWpgtZka2ur/kf0odXLcf8ci0cCOvgOtbApqA==
+  dependencies:
+    tslib "^1.9.0"
+
 ansi-colors@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.1.tgz#cbb9ae256bf750af1eab344f229aa27fe94ba348"
@@ -5107,6 +5114,13 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
+
+ng-wormhole@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/ng-wormhole/-/ng-wormhole-3.0.2.tgz#6886d7bb729e43c4f3dc582d18f014e8c28bedd2"
+  integrity sha512-xqEqrCzZAeIbHB9Vhrg75xoD2jfg5sZL0+f+lVZ0cDjqd8GHYUa3Rqv3NKM/LCHuKq1c3OyLpPzDup6UgCEd2A==
+  dependencies:
+    tslib "^1.9.0"
 
 nice-try@^1.0.4:
   version "1.0.5"

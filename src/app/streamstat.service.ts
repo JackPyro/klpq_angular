@@ -73,8 +73,9 @@ export class StreamstatService {
     const source = this.http.get(listUrl);
 
     source.subscribe((data: unknown) => {
-      this.channels.online = (data as { live: [] }).live.filter(item => !item && item !== null);
+      this.channels.online = (data as { live: [] }).live.filter(item => item);
       this.channels.offline = (data as { channels: [] }).channels.filter(item => !this.channels.online.includes(item));
+
       this.onlineChannels.next(this.channels);
     });
   }

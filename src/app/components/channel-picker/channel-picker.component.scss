@@ -1,0 +1,73 @@
+.live-btn {
+  padding: 5px 20px;
+  background: #5cb85c;
+  width: 100%;
+  min-width: 120px;
+  margin-right: 20px;
+  outline: none;
+  border-color: transparent;
+  cursor: pointer;
+
+  &.active {
+    background: #336733;
+  }
+}
+
+.channel-list {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.live-channels {
+  color: white !important;
+  justify-self: right;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  background-color: #770c06;
+  padding: 7px;
+  border-radius: 5px;
+  .tower-icon {
+    font-size: 12px;
+    margin-right: 2px;
+  }
+}
+
+.channel-item {
+  padding: 0px 5px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: #dddddd;
+  }
+
+  .live-status {
+    background-color: darkred;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+
+  &.offline {
+    .channel-link {
+      color: #4d4d4d;
+    }
+  }
+
+  &.online {
+    .channel-link {
+      color: darkred;
+    }
+  }
+
+  .channel-link {
+    text-decoration: none;
+    font-weight: bold;
+    width: 100%;
+  }
+}

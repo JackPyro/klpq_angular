@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {StreamstatService} from '../../streamstat.service';
+import { Component, OnInit } from '@angular/core';
+import { StreamstatService } from '../../streamstat.service';
 
 @Component({
   selector: 'app-channel-picker',
@@ -11,8 +11,7 @@ export class ChannelPickerComponent implements OnInit {
   offline: [];
   isLoading = true;
 
-  constructor(private stats: StreamstatService) {
-  }
+  constructor(private stats: StreamstatService) {}
 
   ngOnInit() {
     this.stats.onlineChannels.subscribe((channels) => {
@@ -21,5 +20,4 @@ export class ChannelPickerComponent implements OnInit {
       this.isLoading = false;
     });
   }
-
 }

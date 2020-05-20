@@ -33,4 +33,4 @@ const getLink = (name) => {
   return config.link;
 };
 
-export {html5, generateChannelConfig, getLink};
+export { html5, generateChannelConfig, getLink };

@@ -1,11 +1,12 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {StreamstatService} from 'src/app/streamstat.service';
-import {getLink} from '../utils/channels';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { StreamstatService } from 'src/app/streamstat.service';
+import { getLink } from '../utils/channels';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import flv from 'flv.js';
 
-const URL = 'https://widget.mibbit.com/?settings=38d6da09df7f92010527c3537e00d2e8&server=irc.mibbit.net%3A%2B6697&channel=%23';
+const URL =
+  'https://widget.mibbit.com/?settings=38d6da09df7f92010527c3537e00d2e8&server=irc.mibbit.net%3A%2B6697&channel=%23';
 
 @Component({
   selector: 'app-stream-page',
@@ -14,7 +15,7 @@ const URL = 'https://widget.mibbit.com/?settings=38d6da09df7f92010527c3537e00d2e
 })
 export class StreamPageComponent implements OnInit, OnDestroy {
   stream = 'main';
-  stats = {isLive: false, viewers: 0, bitrate: 0, duration: 0, startTime: 0};
+  stats = { isLive: false, viewers: 0, bitrate: 0, duration: 0, startTime: 0 };
 
   player = null;
   playerInit = false;
@@ -23,15 +24,10 @@ export class StreamPageComponent implements OnInit, OnDestroy {
   paramsSubscription = null;
   subscription = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private streamStats: StreamstatService,
-    private sanitizer: DomSanitizer,
-  ) {
-  }
+  constructor(private route: ActivatedRoute, private streamStats: StreamstatService, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.stream = params.stream || 'main';
       this.playerInit = false;
       this.initPlayer();
@@ -43,7 +39,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {
       this.stats = stats as any;
     });
-
   }
 
   ngOnDestroy() {
@@ -60,7 +55,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
   }
 
   initPlayer() {
-
     if (this.playerInit) {
       return;
     }
@@ -74,13 +68,11 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       const url = getLink(this.stream);
 
       const videoElement = document.getElementById('player') as HTMLMediaElement;
-      const player = flv.createPlayer(
-        {
-          type: 'flv',
-          url,
-          cors: true,
-        },
-      );
+      const player = flv.createPlayer({
+        type: 'flv',
+        url,
+        cors: true,
+      });
       player.attachMediaElement(videoElement);
       player.load();
       player.play();

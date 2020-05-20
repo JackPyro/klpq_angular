@@ -2,6 +2,8 @@
   "name": "klpq-angular",
   "version": "0.1.0",
   "scripts": {
+    "prettier": "prettier --list-different \"**/*.{ts,js,json,css,md}\"",
+    "prettier:fix": "prettier --write \"**/*.{ts,js,json,css,md}\"",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -46,6 +48,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "prettier": "^2.0.5",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",

@@ -8,9 +8,8 @@ describe('ChannelPickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChannelPickerComponent ]
-    })
-    .compileComponents();
+      declarations: [ChannelPickerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

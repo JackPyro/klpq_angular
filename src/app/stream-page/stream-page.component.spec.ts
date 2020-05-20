@@ -8,9 +8,8 @@ describe('StreamPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StreamPageComponent ]
-    })
-    .compileComponents();
+      declarations: [StreamPageComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

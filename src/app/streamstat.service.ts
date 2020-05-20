@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
-import {interval, BehaviorSubject} from 'rxjs';
-
-const url = name => `https://stats.klpq.men/api/channels/nms/live/${name}`;
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import humanizeDuration from 'humanize-duration';
+import { BehaviorSubject, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-const fixTime = duration =>
+const url = (name) => `https://stats.klpq.men/api/channels/nms/live/${name}`;
+
+const fixTime = (duration) =>
   humanizeDuration(duration * 1000, {
     round: true,
     largest: 2,
@@ -41,7 +41,7 @@ interface Stats {
 export class StreamstatService {
   stats = {};
 
-  channels = {online: [], offline: []};
+  channels = { online: [], offline: [] };
   currentChannel = '';
 
   statsSubject = new BehaviorSubject(this.stats);
@@ -53,7 +53,7 @@ export class StreamstatService {
   }
 
   initService() {
-    const intevalSource = interval(2000);
+    const intevalSource = interval(5000);
     intevalSource.subscribe(() => this.fetchStats(this.currentChannel));
   }
 
@@ -63,7 +63,7 @@ export class StreamstatService {
   }
 
   initOnlineChannelSearch() {
-    const invervalSource = interval(2000);
+    const invervalSource = interval(5000);
     invervalSource.subscribe(() => this.fetchChannels());
     return;
   }
@@ -73,8 +73,10 @@ export class StreamstatService {
     const source = this.http.get(listUrl);
 
     source.subscribe((data: unknown) => {
-      this.channels.online = (data as { live: [] }).live.filter(item => item);
-      this.channels.offline = (data as { channels: [] }).channels.filter(item => !this.channels.online.includes(item));
+      this.channels.online = (data as { live: [] }).live.filter((item) => item);
+      this.channels.offline = (data as { channels: [] }).channels.filter(
+        (item) => !this.channels.online.includes(item)
+      );
 
       this.onlineChannels.next(this.channels);
     });
@@ -86,9 +88,15 @@ export class StreamstatService {
       return;
     }
 
-    const source = this.http.get(url(channel)).pipe(map(resp => ({...resp, name: channel, duration: fixTime((resp as Stats).duration)})));
+    const source = this.http.get(url(channel)).pipe(
+      map((resp) => ({
+        ...resp,
+        name: channel,
+        duration: fixTime((resp as Stats).duration),
+      }))
+    );
 
-    source.subscribe(data => {
+    source.subscribe((data) => {
       this.stats = data;
       this.statsSubject.next(data);
     });

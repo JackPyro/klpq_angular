@@ -15,7 +15,7 @@ const URL =
 })
 export class StreamPageComponent implements OnInit, OnDestroy {
   stream = 'main';
-  stats = { isLive: false, viewers: 0, bitrate: 0, duration: 0, startTime: 0 };
+  stats = { isLive: false, viewers: 0, bitrate: 0, lastBitrate: 0, duration: 0, startTime: 0 };
 
   player = null;
   playerInit = false;

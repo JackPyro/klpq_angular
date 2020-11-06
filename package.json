@@ -2,8 +2,8 @@
   "name": "klpq-angular",
   "version": "0.1.0",
   "scripts": {
-    "prettier": "prettier --list-different \"**/*.{ts,js,json,css,md}\"",
-    "prettier:fix": "prettier --write \"**/*.{ts,js,json,css,md}\"",
+    "prettier": "prettier --list-different \"**/*.{ts,js,json,css,md,html}\"",
+    "prettier:fix": "prettier --write \"**/*.{ts,js,json,css,md,html}\"",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

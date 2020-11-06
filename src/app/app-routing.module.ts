@@ -6,6 +6,10 @@ import { StreamPageComponent } from './stream-page/stream-page.component';
 const routes: Routes = [
   { path: '', component: IndexPageComponent },
   {
+    path: 'stream/:app/:stream',
+    component: StreamPageComponent,
+  },
+  {
     path: 'stream/:stream',
     component: StreamPageComponent,
   },

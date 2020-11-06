@@ -1,15 +1,17 @@
-
-<span class="live-channels" title="Live Channels"><i class="tower-icon fas fa-signal"></i> {{online.length || 0}}  </span>
-<div ngDropdown [renderInPlace]="true" [horizontalPosition]='"center"'>
+<span class="live-channels" title="Live Channels"
+  ><i class="tower-icon fas fa-signal"></i> {{ online.length || 0 }}
+</span>
+<div ngDropdown [renderInPlace]="true" [horizontalPosition]="'center'">
   <button class="live-btn" ngDropdownControl>Change Channel</button>
   <div ngDropdownContent dropdownClass="slide-fade dropper">
-
-    <div *ngIf="!isLoading;" class="channel-list" >
+    <div *ngIf="!isLoading" class="channel-list">
       <div class="channel-item online" *ngFor="let channel of online">
-        <a routerLink="/stream/{{channel}}" class="channel-link">{{channel}} <span class="live-status">LIVE</span></a>
+        <a routerLink="/stream/{{ channel }}" class="channel-link"
+          >{{ channel }} <span class="live-status">LIVE</span></a
+        >
       </div>
       <div class="channel-item offline" *ngFor="let channel of offline">
-        <a routerLink="/stream/{{channel}}" class="channel-link ">{{channel}}</a>
+        <a routerLink="/stream/{{ channel }}" class="channel-link">{{ channel }}</a>
       </div>
     </div>
   </div>

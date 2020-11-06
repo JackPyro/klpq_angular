@@ -14,6 +14,7 @@ const URL =
   styleUrls: ['./stream-page.component.scss'],
 })
 export class StreamPageComponent implements OnInit, OnDestroy {
+  app = 'live';
   stream = 'main';
   stats = { isLive: false, viewers: 0, bitrate: 0, lastBitrate: 0, duration: 0, startTime: 0 };
 
@@ -28,6 +29,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
+      this.app = params.app || 'live';
       this.stream = params.stream || 'main';
       this.playerInit = false;
       this.initPlayer();
@@ -65,7 +67,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       }
       this.playerInit = true;
 
-      const url = getLink(this.stream);
+      const url = getLink(this.stream, this.app);
 
       const videoElement = document.getElementById('player') as HTMLMediaElement;
       const player = flv.createPlayer({

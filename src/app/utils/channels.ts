@@ -19,17 +19,17 @@ const html5 = {
   },
 };
 
-const generateChannelConfig = (name) => {
+const generateChannelConfig = (name, app) => {
   return {
     name,
     appName: name,
-    link: `wss://mediaserver.klpq.men/live/${name}.flv`,
-    restream: `wss://mediaserver.klpq.men/restream/${name}.flv`,
+    link: `wss://mediaserver.klpq.men/${app}/${name}.flv`,
+    restream: `wss://mediaserver.klpq.men/encode/${name}.flv`,
   };
 };
 
-const getLink = (name) => {
-  const config = generateChannelConfig(name);
+const getLink = (name, app) => {
+  const config = generateChannelConfig(name, app);
   return config.link;
 };
 

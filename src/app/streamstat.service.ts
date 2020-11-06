@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import humanizeDuration from 'humanize-duration';
 import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { find } from 'lodash';
 
 const url = (name) => `https://stats.klpq.men/api/channels/nms/live/${name}`;
 
@@ -35,13 +36,21 @@ interface Stats {
   name: any;
 }
 
+interface IListResponse {
+  channels: string[];
+  live: {
+    app: string;
+    channel: string;
+  }[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class StreamstatService {
   stats = {};
 
-  channels = { online: [], offline: [] };
+  channels: { online: string[]; offline: string[] } = { online: [], offline: [] };
   currentChannel = '';
 
   statsSubject = new BehaviorSubject(this.stats);
@@ -72,11 +81,13 @@ export class StreamstatService {
     const listUrl = 'https://stats.klpq.men/api/channels/list';
     const source = this.http.get(listUrl);
 
-    source.subscribe((data: unknown) => {
-      this.channels.online = (data as { live: [] }).live.filter((item) => item);
-      this.channels.offline = (data as { channels: [] }).channels.filter(
-        (item) => !this.channels.online.includes(item)
-      );
+    source.subscribe((data: IListResponse) => {
+      this.channels.online = data.live.map((item) => `${item.app}/${item.channel}`);
+      this.channels.offline = data.channels.filter((item) => {
+        const liveChannel = find(this.channels.online, (channel) => channel.includes(`/${item}`));
+
+        return !liveChannel;
+      });
 
       this.onlineChannels.next(this.channels);
     });

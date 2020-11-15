@@ -11,7 +11,13 @@
       <video id="player" controls></video>
     </div>
     <div class="chat-section" *ngIf="chatUrl">
-      <iframe width="100%" height="720" scrolling="no" frameborder="0" [src]="chatUrl"></iframe>
+      <iframe
+        width="100%"
+        height="720"
+        scrolling="no"
+        frameborder="0"
+        [src]="chatUrl"
+      ></iframe>
     </div>
     <div class="utility-section">
       <div class="stats">
@@ -34,7 +40,9 @@
       </div>
     </div>
     <div class="under-chat-section" *ngIf="chatUrl">
-      <a [href]="chatUrl" target="_blank" class="expand-chat"><i class="fas fa-external-link-alt"></i> Open chat</a>
+      <a [href]="chatUrl" target="_blank" class="expand-chat"
+        ><i class="fas fa-external-link-alt"></i> Open chat</a
+      >
     </div>
   </div>
 </div>

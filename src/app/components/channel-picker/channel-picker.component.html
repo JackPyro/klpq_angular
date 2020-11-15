@@ -11,7 +11,9 @@
         >
       </div>
       <div class="channel-item offline" *ngFor="let channel of offline">
-        <a routerLink="/stream/{{ channel }}" class="channel-link">{{ channel }}</a>
+        <a routerLink="/stream/{{ channel }}" class="channel-link">{{
+          channel
+        }}</a>
       </div>
     </div>
   </div>

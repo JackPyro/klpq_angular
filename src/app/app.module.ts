@@ -9,9 +9,19 @@ import { StreamstatService } from './streamstat.service';
 import { ChannelPickerComponent } from './components/channel-picker/channel-picker.component';
 import { AngularDropdownModule } from 'angular-dropdown';
 @NgModule({
-  declarations: [AppComponent, IndexPageComponent, StreamPageComponent, ChannelPickerComponent],
+  declarations: [
+    AppComponent,
+    IndexPageComponent,
+    StreamPageComponent,
+    ChannelPickerComponent,
+  ],
   providers: [StreamstatService],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, AngularDropdownModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    AngularDropdownModule,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

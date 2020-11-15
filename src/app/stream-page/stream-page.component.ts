@@ -16,7 +16,14 @@ const URL =
 export class StreamPageComponent implements OnInit, OnDestroy {
   app = 'live';
   stream = 'main';
-  stats = { isLive: false, viewers: 0, bitrate: 0, lastBitrate: 0, duration: 0, startTime: 0 };
+  stats = {
+    isLive: false,
+    viewers: 0,
+    bitrate: 0,
+    lastBitrate: 0,
+    duration: 0,
+    startTime: 0,
+  };
 
   player = null;
   playerInit = false;
@@ -25,7 +32,11 @@ export class StreamPageComponent implements OnInit, OnDestroy {
   paramsSubscription = null;
   subscription = null;
 
-  constructor(private route: ActivatedRoute, private streamStats: StreamstatService, private sanitizer: DomSanitizer) {}
+  constructor(
+    private route: ActivatedRoute,
+    private streamStats: StreamstatService,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -69,7 +80,9 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
       const url = getLink(this.stream, this.app);
 
-      const videoElement = document.getElementById('player') as HTMLMediaElement;
+      const videoElement = document.getElementById(
+        'player',
+      ) as HTMLMediaElement;
       const player = flv.createPlayer({
         type: 'flv',
         url,

@@ -35,7 +35,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       this.initPlayer();
       this.getChatUrl();
 
-      this.streamStats.setChannel(this.stream);
+      this.streamStats.setChannel(this.stream, this.app);
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {

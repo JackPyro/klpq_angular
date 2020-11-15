@@ -5,7 +5,7 @@ import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 
-const url = (name) => `https://stats.klpq.men/api/channels/nms/live/${name}`;
+const url = (name, app) => `https://stats.klpq.men/api/channels/nms/${app}/${name}`;
 
 const fixTime = (duration) =>
   humanizeDuration(duration * 1000, {
@@ -52,6 +52,7 @@ export class StreamstatService {
 
   channels: { online: string[]; offline: string[] } = { online: [], offline: [] };
   currentChannel = '';
+  currentApp = '';
 
   statsSubject = new BehaviorSubject(this.stats);
   onlineChannels = new BehaviorSubject(this.channels);
@@ -63,12 +64,13 @@ export class StreamstatService {
 
   initService() {
     const intevalSource = interval(5000);
-    intevalSource.subscribe(() => this.fetchStats(this.currentChannel));
+    intevalSource.subscribe(() => this.fetchStats(this.currentChannel, this.currentApp));
   }
 
-  setChannel(channel) {
+  setChannel(channel, app) {
     this.stats = {};
     this.currentChannel = channel;
+    this.currentApp = app;
   }
 
   initOnlineChannelSearch() {
@@ -93,13 +95,13 @@ export class StreamstatService {
     });
   }
 
-  fetchStats(channel) {
-    if (!channel) {
+  fetchStats(channel, app) {
+    if (!channel || !app) {
       this.stats = {};
       return;
     }
 
-    const source = this.http.get(url(channel)).pipe(
+    const source = this.http.get(url(channel, app)).pipe(
       map((resp) => ({
         ...resp,
         name: channel,

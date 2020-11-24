@@ -5,8 +5,10 @@ import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 
-const url = (name, app) =>
-  `https://stats.klpq.men/api/channels/nms/${app}/${name}`;
+const STREAM_HOST = 'mediaserver.klpq.men';
+
+const url = (name, app, host) =>
+  `https://stats.klpq.men/api/channels/${host}/${app}/${name}`;
 
 const fixTime = (duration) =>
   humanizeDuration(duration * 1000, {
@@ -111,7 +113,7 @@ export class StreamstatService {
       return;
     }
 
-    const source = this.http.get(url(channel, app)).pipe(
+    const source = this.http.get(url(channel, app, STREAM_HOST)).pipe(
       map((resp) => ({
         ...resp,
         name: channel,

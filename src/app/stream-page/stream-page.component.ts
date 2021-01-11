@@ -124,14 +124,14 @@ export class StreamPageComponent implements OnInit, OnDestroy {
           break;
         }
         case 'mpd': {
-          url = getMpdLink(this.stream);
+          url = getMpdLink(this.stream, this.app);
 
           const videoElement = document.getElementById(
             'player',
           ) as HTMLMediaElement;
 
           const player = dashjs.MediaPlayer().create();
-          player.initialize(videoElement, url, false);
+          player.initialize(videoElement, url, true);
           player.play();
 
           break;

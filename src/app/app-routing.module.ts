@@ -4,7 +4,14 @@ import { IndexPageComponent } from './index-page/index-page.component';
 import { StreamPageComponent } from './stream-page/stream-page.component';
 
 const routes: Routes = [
-  { path: '', component: IndexPageComponent },
+  {
+    path: '',
+    component: IndexPageComponent,
+  },
+  {
+    path: 'stream/:app/:stream/:protocol',
+    component: StreamPageComponent,
+  },
   {
     path: 'stream/:app/:stream',
     component: StreamPageComponent,

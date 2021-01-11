@@ -31,6 +31,11 @@ const fixTime = (duration) =>
     },
   });
 
+export enum ProtocolsEnum {
+  WSS = 'wss',
+  MPD = 'mpd',
+}
+
 interface Stats {
   duration: any;
   viewers: any;
@@ -59,6 +64,7 @@ export class StreamstatService {
   };
   currentChannel = '';
   currentApp = '';
+  currentProtocol = ProtocolsEnum.WSS;
 
   statsSubject = new BehaviorSubject(this.stats);
   onlineChannels = new BehaviorSubject(this.channels);
@@ -75,10 +81,12 @@ export class StreamstatService {
     );
   }
 
-  setChannel(channel, app) {
+  setChannel(channel, app, protocol: ProtocolsEnum) {
     this.stats = {};
+
     this.currentChannel = channel;
     this.currentApp = app;
+    this.currentProtocol = protocol;
   }
 
   initOnlineChannelSearch() {
@@ -92,9 +100,12 @@ export class StreamstatService {
     const source = this.http.get(listUrl);
 
     source.subscribe((data: IListResponse) => {
-      this.channels.online = data.live.map(
-        (item) => `${item.app}/${item.channel}`,
-      );
+      this.channels.online = [];
+
+      data.live.map((item) => {
+        this.channels.online.push(`${item.app}/${item.channel}`);
+        this.channels.online.push(`${item.app}/${item.channel}/mpd`);
+      });
       this.channels.offline = data.channels.filter((item) => {
         const liveChannel = find(this.channels.online, (channel) =>
           channel.includes(`/${item}`),

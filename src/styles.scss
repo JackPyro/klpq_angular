@@ -5,23 +5,23 @@
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
-
-body, html {
+body,
+html {
   position: absolute;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 body {
   overflow: hidden;
 }
 
-
-
-.dropper, .render-in-place, .list{
+.dropper,
+.render-in-place,
+.list {
   width: 100% !important;
 }

@@ -8,12 +8,14 @@ import { StreamPageComponent } from './stream-page/stream-page.component';
 import { StreamstatService } from './streamstat.service';
 import { ChannelPickerComponent } from './components/channel-picker/channel-picker.component';
 import { AngularDropdownModule } from 'angular-dropdown';
+import { MinimalComponent } from './stream-page/minimal/minimal.component';
 @NgModule({
   declarations: [
     AppComponent,
     IndexPageComponent,
     StreamPageComponent,
     ChannelPickerComponent,
+    MinimalComponent,
   ],
   providers: [StreamstatService],
   imports: [

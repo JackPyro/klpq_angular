@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { IndexPageComponent } from './index-page/index-page.component';
 import { StreamPageComponent } from './stream-page/stream-page.component';
+import { MinimalComponent } from './stream-page/minimal/minimal.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
   {
     path: 'stream',
     component: StreamPageComponent,
+  },
+
+  {
+    path: 'minimal/:stream',
+    component: MinimalComponent,
   },
 ];
 

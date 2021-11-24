@@ -5,9 +5,7 @@ import { getLink, getMpdLink } from '../utils/channels';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import flv from 'flv.js';
 import * as dashjs from 'dashjs';
-
-const URL =
-  'https://widget.mibbit.com/?settings=38d6da09df7f92010527c3537e00d2e8&server=irc.mibbit.net%3A%2B6697&channel=%23';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-stream-page',
@@ -86,7 +84,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   getChatUrl() {
     // const url = `${URL}podkolpakom_${this.stream}`;
-    const url = 'https://chat.klpq.io/';
+    const url = environment.CHAT_URL;
     this.chatUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

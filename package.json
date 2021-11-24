@@ -4,9 +4,10 @@
   "scripts": {
     "prettier": "prettier \"**/*\" --list-different --ignore-unknown",
     "prettier:fix": "prettier \"**/*\" --write --ignore-unknown",
+    "build-env-file": "node build-env-file.js",
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "yarn run build-env-file && ng serve",
+    "build": "yarn run build-env-file && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -28,6 +29,7 @@
     "@angular/router": "~8.2.11",
     "angular-dropdown": "^0.5.5",
     "dashjs": "^3.2.0",
+    "dotenv": "^10.0.0",
     "flv.js": "^1.5.0",
     "humanize": "^0.0.9",
     "humanize-duration": "^3.21.0",

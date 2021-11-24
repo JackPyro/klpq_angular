@@ -4,11 +4,12 @@ import humanizeDuration from 'humanize-duration';
 import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { find } from 'lodash';
+import { environment } from 'src/environments/environment';
 
-const STREAM_HOST = 'mediaserver.klpq.men';
+const STREAM_HOST = environment.STATS_SERVER;
 
 const url = (name, app, host) =>
-  `https://stats.klpq.men/api/channels/${host}/${app}/${name}`;
+  `${environment.STATS_URL}/channels/${host}/${app}/${name}`;
 
 const fixTime = (duration) =>
   humanizeDuration(duration * 1000, {
@@ -96,7 +97,7 @@ export class StreamstatService {
   }
 
   fetchChannels() {
-    const listUrl = 'https://stats.klpq.men/api/channels/list';
+    const listUrl = `${environment.STATS_URL}/channels/list`;
     const source = this.http.get(listUrl);
 
     source.subscribe((data: IListResponse) => {

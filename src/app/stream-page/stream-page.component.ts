@@ -86,7 +86,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   getChatUrl() {
     // const url = `${URL}podkolpakom_${this.stream}`;
-    const url = 'https://chat.klpq.men/';
+    const url = 'https://chat.klpq.io/';
     this.chatUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

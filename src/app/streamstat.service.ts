@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 import { environment } from 'src/environments/environment';
 
-const STREAM_HOST = environment.STATS_SERVER;
+const STATS_SERVER = environment.STATS_SERVER;
 
 const url = (name, app, host) =>
   `${environment.STATS_URL}/channels/${host}/${app}/${name}`;
@@ -125,7 +125,7 @@ export class StreamstatService {
       return;
     }
 
-    const source = this.http.get(url(channel, app, STREAM_HOST)).pipe(
+    const source = this.http.get(url(channel, app, STATS_SERVER)).pipe(
       map((resp) => ({
         ...resp,
         name: channel,

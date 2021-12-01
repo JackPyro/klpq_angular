@@ -89,9 +89,13 @@ export class StreamstatService {
     this.currentChannel = channel;
     this.currentApp = app;
     this.currentProtocol = protocol;
+
+    this.fetchStats(this.currentChannel, this.currentApp);
   }
 
   initOnlineChannelSearch() {
+    this.fetchChannels();
+
     const invervalSource = interval(5000);
     invervalSource.subscribe(() => this.fetchChannels());
     return;
@@ -106,8 +110,6 @@ export class StreamstatService {
 
       data.live.map((item) => {
         this.channels.online.push(`${item.app}/${item.channel}`);
-        this.channels.online.push(`${item.app}/${item.channel}/mpd`);
-        this.channels.online.push(`${item.app}/${item.channel}/hls`);
       });
       this.channels.offline = data.channels.filter((item) => {
         const liveChannel = find(this.channels.online, (channel) =>

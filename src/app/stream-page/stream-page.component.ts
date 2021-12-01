@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProtocolsEnum, StreamstatService } from 'src/app/streamstat.service';
 import { createPlayer } from '../utils/channels';
@@ -36,10 +42,33 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private streamStats: StreamstatService,
     private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
+      const protocolSelector = document.getElementById('protocol');
+
+      protocolSelector.addEventListener('change', () => {
+        const newProtocol = (protocolSelector as any).value;
+
+        this.protocol = newProtocol;
+
+        this.cdr.detectChanges();
+      });
+
+      (protocolSelector as any).replaceChildren();
+
+      Object.values([ProtocolsEnum.WSS]).forEach((protocol) => {
+        const optionElement = document.createElement('option');
+
+        optionElement.value = protocol;
+        optionElement.innerHTML = protocol;
+        optionElement.selected = protocol === params.protocol;
+
+        protocolSelector.appendChild(optionElement);
+      });
+
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
 
@@ -102,8 +131,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
     this.playerInit = true;
 
-    const playerSelector: any =
-      document.getElementsByClassName('player-section')[0];
+    const playerSelector = document.getElementsByClassName('player-section')[0];
 
     if (this.stopFnc) {
       this.stopFnc();
@@ -114,7 +142,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     videoPlayer.setAttribute('id', 'player');
     videoPlayer.setAttribute('controls', 'true');
 
-    playerSelector.replaceChildren(videoPlayer);
+    (playerSelector as any).replaceChildren(videoPlayer);
 
     this.stopFnc = createPlayer(
       this.app,

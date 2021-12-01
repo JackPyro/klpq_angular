@@ -96,8 +96,7 @@ export class MinimalComponent implements OnInit, OnDestroy {
 
     this.playerInit = true;
 
-    const playerSelector: any =
-      document.getElementsByClassName('player-section')[0];
+    const playerSelector = document.getElementsByClassName('player-section')[0];
 
     if (this.stopFnc) {
       this.stopFnc();
@@ -108,7 +107,7 @@ export class MinimalComponent implements OnInit, OnDestroy {
     videoPlayer.setAttribute('id', 'player');
     videoPlayer.setAttribute('controls', 'true');
 
-    playerSelector.replaceChildren(videoPlayer);
+    (playerSelector as any).replaceChildren(videoPlayer);
 
     this.stopFnc = createPlayer(
       this.app,

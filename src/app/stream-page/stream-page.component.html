@@ -36,6 +36,12 @@
           <span> {{ stats.startTime | date: 'shortTime' }}</span>
         </div>
       </div>
+      <div style="float: right; margin-right: 2%; margin-top: -2%">
+        <span style="color: white">
+          {{ 'Protocol ' }}
+        </span>
+        <select id="protocol" name="protocol"></select>
+      </div>
     </div>
     <div class="under-chat-section" *ngIf="chatUrl">
       <a [href]="chatUrl" target="_blank" class="expand-chat"

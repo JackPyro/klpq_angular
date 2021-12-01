@@ -29,7 +29,7 @@
   }
 }
 .player-section {
-  height: 720px;
+  height: 100%;
   background-color: black;
 }
 .channel-name {
@@ -67,9 +67,9 @@
   }
 }
 
-#player {
+:host::ng-deep #player {
   width: 100%;
-  height: 720px;
+  height: 100%;
   background-color: black;
 }
 
@@ -85,7 +85,7 @@
 .main-area {
   margin: 0 15px;
   display: grid;
-  grid: 720px 1fr / 1fr;
+  grid: 95% 1fr / 1fr;
 }
 
 .under-chat-section {

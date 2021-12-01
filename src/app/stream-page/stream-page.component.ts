@@ -25,9 +25,9 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     startTime: 0,
   };
 
-  player = null;
   playerInit = false;
   chatUrl: SafeResourceUrl;
+  stopFnc = null;
 
   paramsSubscription = null;
   subscription = null;
@@ -67,6 +67,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       }
 
       this.playerInit = false;
+
       this.initPlayer();
       this.getChatUrl();
 
@@ -79,10 +80,10 @@ export class StreamPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.player) {
-      this.chatUrl = '';
-      this.player.pause();
-      this.player.unload();
+    console.log('ngOnDestroy');
+
+    if (this.stopFnc) {
+      this.stopFnc();
     }
   }
 
@@ -93,19 +94,33 @@ export class StreamPageComponent implements OnInit, OnDestroy {
   }
 
   initPlayer() {
+    console.log('initPlayer');
+
     if (this.playerInit) {
       return;
     }
 
-    if (this.player) {
-      this.player.pause();
-      this.player.unload();
-    }
-
     this.playerInit = true;
 
-    this.player = document.getElementById('player') as HTMLMediaElement;
+    const playerSelector: any =
+      document.getElementsByClassName('player-section')[0];
 
-    createPlayer(this.app, this.stream, this.protocol, this.player);
+    if (this.stopFnc) {
+      this.stopFnc();
+    }
+
+    const videoPlayer = document.createElement('video');
+
+    videoPlayer.setAttribute('id', 'player');
+    videoPlayer.setAttribute('controls', 'true');
+
+    playerSelector.replaceChildren(videoPlayer);
+
+    this.stopFnc = createPlayer(
+      this.app,
+      this.stream,
+      this.protocol,
+      videoPlayer,
+    );
   }
 }

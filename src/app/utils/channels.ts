@@ -37,6 +37,8 @@ export function createPlayer(
   protocol: string,
   videoElement: HTMLMediaElement,
 ) {
+  let stopPlaybackFnc = () => {};
+
   switch (protocol) {
     case 'wss': {
       const url = getLink(stream, app);
@@ -45,10 +47,16 @@ export function createPlayer(
         type: 'flv',
         url,
         cors: true,
+        isLive: true,
       });
       player.attachMediaElement(videoElement);
       player.load();
       player.play();
+
+      stopPlaybackFnc = () => {
+        player.pause();
+        player.unload();
+      };
 
       break;
     }
@@ -59,6 +67,11 @@ export function createPlayer(
       player.initialize(videoElement, url, true);
       player.play();
 
+      stopPlaybackFnc = () => {
+        player.pause();
+        player.destroy();
+      };
+
       break;
     }
     case 'hls': {
@@ -67,6 +80,11 @@ export function createPlayer(
       if (iOS()) {
         videoElement.src = url;
         videoElement.play();
+
+        stopPlaybackFnc = () => {
+          videoElement.pause();
+          videoElement.remove();
+        };
 
         break;
       }
@@ -81,10 +99,17 @@ export function createPlayer(
         videoElement.play();
       });
 
+      stopPlaybackFnc = () => {
+        player.stopLoad();
+        player.destroy();
+      };
+
       break;
     }
     default: {
       break;
     }
   }
+
+  return stopPlaybackFnc;
 }

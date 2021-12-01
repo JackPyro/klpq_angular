@@ -21,15 +21,22 @@ const routes: Routes = [
     path: 'stream/:stream',
     component: StreamPageComponent,
   },
-
   {
     path: 'stream',
     component: StreamPageComponent,
   },
-
   {
     path: 'minimal/:stream',
     component: MinimalComponent,
+  },
+  {
+    path: 'minimal',
+    component: MinimalComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+    pathMatch: 'full',
   },
 ];
 

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProtocolsEnum, StreamstatService } from 'src/app/streamstat.service';
-import { getLink, getMpdLink } from '../utils/channels';
+import { getHlsLink, getLink, getMpdLink } from '../utils/channels';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import flv from 'flv.js';
 import * as dashjs from 'dashjs';
+import Hls from 'hls.js';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -52,6 +53,11 @@ export class StreamPageComponent implements OnInit, OnDestroy {
         }
         case 'mpd': {
           this.protocol = ProtocolsEnum.MPD;
+
+          break;
+        }
+        case 'hls': {
+          this.protocol = ProtocolsEnum.HLS;
 
           break;
         }
@@ -133,6 +139,24 @@ export class StreamPageComponent implements OnInit, OnDestroy {
           player.initialize(videoElement, url, true);
           player.play();
 
+          break;
+        }
+        case 'hls': {
+          url = getHlsLink(this.stream, this.app);
+
+          const videoElement = document.getElementById(
+            'player',
+          ) as HTMLMediaElement;
+
+          const player = new Hls();
+
+          player.loadSource(url);
+          player.attachMedia(videoElement);
+
+          player.on(Hls.Events.MEDIA_ATTACHED, function () {
+            videoElement.muted = false;
+            videoElement.play();
+          });
           break;
         }
         default: {

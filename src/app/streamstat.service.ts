@@ -35,6 +35,7 @@ const fixTime = (duration) =>
 export enum ProtocolsEnum {
   WSS = 'wss',
   MPD = 'mpd',
+  HLS = 'hls',
 }
 
 interface Stats {

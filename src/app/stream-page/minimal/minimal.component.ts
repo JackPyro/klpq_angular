@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProtocolsEnum, StreamstatService } from 'src/app/streamstat.service';
-import { getHlsLink, getLink, getMpdLink } from '../../utils/channels';
+import {
+  createPlayer,
+  getHlsLink,
+  getLink,
+  getMpdLink,
+} from '../../utils/channels';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import flv from 'flv.js';
-import * as dashjs from 'dashjs';
-import Hls from 'hls.js';
 
 @Component({
   selector: 'app-minimal',
@@ -88,71 +90,16 @@ export class MinimalComponent implements OnInit, OnDestroy {
     if (this.playerInit) {
       return;
     }
-    if (flv.isSupported) {
-      if (this.player) {
-        this.player.pause();
-        this.player.unload();
-      }
-      this.playerInit = true;
 
-      let url: string;
-
-      switch (this.protocol) {
-        case 'wss': {
-          url = getLink(this.stream, this.app);
-
-          const videoElement = document.getElementById(
-            'player',
-          ) as HTMLMediaElement;
-
-          const player = flv.createPlayer({
-            type: 'flv',
-            url,
-            cors: true,
-          });
-          player.attachMediaElement(videoElement);
-          player.load();
-          player.play();
-
-          this.player = player;
-
-          break;
-        }
-        case 'mpd': {
-          url = getMpdLink(this.stream, this.app);
-
-          const videoElement = document.getElementById(
-            'player',
-          ) as HTMLMediaElement;
-
-          const player = dashjs.MediaPlayer().create();
-          player.initialize(videoElement, url, true);
-          player.play();
-
-          break;
-        }
-        case 'hls': {
-          url = getHlsLink(this.stream, this.app);
-
-          const videoElement = document.getElementById(
-            'player',
-          ) as HTMLMediaElement;
-
-          const player = new Hls();
-
-          player.loadSource(url);
-          player.attachMedia(videoElement);
-
-          player.on(Hls.Events.MEDIA_ATTACHED, function () {
-            videoElement.muted = false;
-            videoElement.play();
-          });
-          break;
-        }
-        default: {
-          break;
-        }
-      }
+    if (this.player) {
+      this.player.pause();
+      this.player.unload();
     }
+
+    this.playerInit = true;
+
+    this.player = document.getElementById('player') as HTMLMediaElement;
+
+    createPlayer(this.app, this.stream, this.protocol, this.player);
   }
 }

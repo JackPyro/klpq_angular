@@ -47,28 +47,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const protocolSelector = document.getElementById('protocol');
-
-      protocolSelector.addEventListener('change', () => {
-        const newProtocol = (protocolSelector as any).value;
-
-        this.protocol = newProtocol;
-
-        this.cdr.detectChanges();
-      });
-
-      (protocolSelector as any).replaceChildren();
-
-      Object.values([ProtocolsEnum.WSS]).forEach((protocol) => {
-        const optionElement = document.createElement('option');
-
-        optionElement.value = protocol;
-        optionElement.innerHTML = protocol;
-        optionElement.selected = protocol === params.protocol;
-
-        protocolSelector.appendChild(optionElement);
-      });
-
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
 
@@ -142,7 +120,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     videoPlayer.setAttribute('id', 'player');
     videoPlayer.setAttribute('controls', 'true');
 
-    (playerSelector as any).replaceChildren(videoPlayer);
+    playerSelector.replaceChildren(videoPlayer);
 
     this.stopFnc = createPlayer(
       this.app,

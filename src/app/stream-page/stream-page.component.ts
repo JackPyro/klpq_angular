@@ -43,12 +43,9 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
 
-      switch (params.protocol) {
-        case 'wss': {
-          this.protocol = ProtocolsEnum.WSS;
+      const [, protocol] = params.app.split('_');
 
-          break;
-        }
+      switch (protocol) {
         case 'mpd': {
           this.protocol = ProtocolsEnum.MPD;
 
@@ -116,7 +113,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     (playerSelector as any).replaceChildren(videoPlayer);
 
     this.stopFnc = createPlayer(
-      this.app,
+      this.app.split('_')[0],
       this.stream,
       this.protocol,
       videoPlayer,

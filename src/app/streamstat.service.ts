@@ -110,8 +110,6 @@ export class StreamstatService {
 
       data.live.map((item) => {
         this.channels.online.push(`${item.app}/${item.channel}`);
-        this.channels.online.push(`${item.app}/${item.channel}/mpd`);
-        this.channels.online.push(`${item.app}/${item.channel}/hls`);
       });
       this.channels.offline = data.channels.filter((item) => {
         const liveChannel = find(this.channels.online, (channel) =>

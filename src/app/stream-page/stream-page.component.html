@@ -7,7 +7,9 @@
     <app-channel-picker class="channel-switch-wrap"></app-channel-picker>
   </div>
   <div class="main-area">
-    <div class="player-section"></div>
+    <div class="player-section">
+      <video id="player" controls></video>
+    </div>
     <div class="chat-section" *ngIf="chatUrl">
       <iframe
         width="100%"

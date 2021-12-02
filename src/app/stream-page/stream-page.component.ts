@@ -120,7 +120,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     videoPlayer.setAttribute('id', 'player');
     videoPlayer.setAttribute('controls', 'true');
 
-    playerSelector.replaceChildren(videoPlayer);
+    (playerSelector as any).replaceChildren(videoPlayer);
 
     this.stopFnc = createPlayer(
       this.app,

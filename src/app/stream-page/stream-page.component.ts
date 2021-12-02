@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProtocolsEnum, StreamstatService } from 'src/app/streamstat.service';
 import { createPlayer } from '../utils/channels';
@@ -42,7 +36,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private streamStats: StreamstatService,
     private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {

@@ -24,9 +24,9 @@ const fixTime = (duration) =>
         mo: 'mo',
         w: 'w',
         d: 'd',
-        h: '',
-        m: '',
-        s: '',
+        h: 'h',
+        m: 'm',
+        s: 's',
         ms: 'ms',
       },
     },
@@ -110,6 +110,8 @@ export class StreamstatService {
 
       data.live.map((item) => {
         this.channels.online.push(`${item.app}/${item.channel}`);
+        this.channels.online.push(`${item.app}/${item.channel}/mpd`);
+        this.channels.online.push(`${item.app}/${item.channel}/hls`);
       });
       this.channels.offline = data.channels.filter((item) => {
         const liveChannel = find(this.channels.online, (channel) =>

@@ -45,7 +45,7 @@ export class MinimalComponent implements OnInit, OnDestroy {
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
 
-      const [, protocol] = params.app.split('_');
+      const [, protocol] = (params.app || '').split('_');
 
       switch (protocol) {
         case 'mpd': {

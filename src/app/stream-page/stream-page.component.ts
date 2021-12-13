@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 export class StreamPageComponent implements OnInit, OnDestroy {
   app = 'live';
   stream = 'main';
-  protocol = ProtocolsEnum.WSS;
+  protocol;
   server = null;
 
   stats = {
@@ -65,7 +65,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
           break;
         }
         default: {
-          this.protocol = ProtocolsEnum.WSS;
           this.server = STATS_SERVER;
 
           break;
@@ -77,12 +76,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       this.initPlayer();
       this.getChatUrl();
 
-      this.streamStats.setChannel(
-        this.stream,
-        this.app,
-        this.protocol,
-        this.server,
-      );
+      this.streamStats.setChannel(this.stream, this.app, this.server);
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {

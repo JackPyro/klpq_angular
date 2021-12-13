@@ -29,7 +29,7 @@ export const getHlsLink = async (name, app) => {
   return `${environment.MPD_URL}/watch/${id}/index.m3u8`;
 };
 
-function iOS() {
+function isIOS() {
   return (
     [
       'iPad Simulator',
@@ -44,6 +44,10 @@ function iOS() {
   );
 }
 
+function isAndroid() {
+  return navigator.userAgent.includes('Android');
+}
+
 export async function createPlayer(
   app: string,
   stream: string,
@@ -56,73 +60,115 @@ export async function createPlayer(
     case 'wss': {
       const url = getLink(stream, app);
 
-      const player = flv.createPlayer({
-        type: 'flv',
-        url,
-        cors: true,
-        isLive: true,
-      });
-      player.attachMediaElement(videoElement);
-      player.load();
-      player.play();
-
-      stopPlaybackFnc = () => {
-        player.pause();
-        player.unload();
-      };
+      stopPlaybackFnc = createWssPlayer(videoElement, url);
 
       break;
     }
     case 'mpd': {
       const url = await getMpdLink(stream, app);
 
-      const player = dashjs.MediaPlayer().create();
-      player.initialize(videoElement, url, true);
-      player.play();
+      if (isAndroid()) {
+        stopPlaybackFnc = createNativePlayer(videoElement, url);
 
-      stopPlaybackFnc = () => {
-        player.pause();
-        player.destroy();
-      };
+        break;
+      }
+
+      stopPlaybackFnc = createMpdPlayer(videoElement, url);
 
       break;
     }
     case 'hls': {
       const url = await getHlsLink(stream, app);
 
-      if (iOS()) {
-        videoElement.src = url;
-        videoElement.play();
-
-        stopPlaybackFnc = () => {
-          videoElement.pause();
-          videoElement.remove();
-        };
+      if (isIOS()) {
+        stopPlaybackFnc = createNativePlayer(videoElement, url);
 
         break;
       }
 
-      const player = new Hls();
-
-      player.loadSource(url);
-      player.attachMedia(videoElement);
-
-      player.on(Hls.Events.MEDIA_ATTACHED, function () {
-        videoElement.muted = false;
-        videoElement.play();
-      });
-
-      stopPlaybackFnc = () => {
-        player.stopLoad();
-        player.destroy();
-      };
+      stopPlaybackFnc = createHlsPlayer(videoElement, url);
 
       break;
     }
     default: {
+      if (isIOS()) {
+        const url = await getHlsLink(stream, app);
+
+        stopPlaybackFnc = createNativePlayer(videoElement, url);
+
+        break;
+      }
+
+      if (isAndroid()) {
+        const url = await getMpdLink(stream, app);
+
+        stopPlaybackFnc = createNativePlayer(videoElement, url);
+
+        break;
+      }
+
+      const url = getLink(stream, app);
+
+      stopPlaybackFnc = createWssPlayer(videoElement, url);
+
       break;
     }
   }
 
   return stopPlaybackFnc;
+}
+
+function createWssPlayer(videoElement: HTMLMediaElement, url: string) {
+  const player = flv.createPlayer({
+    type: 'flv',
+    url,
+    cors: true,
+    isLive: true,
+  });
+  player.attachMediaElement(videoElement);
+  player.load();
+  player.play();
+
+  return () => {
+    player.pause();
+    player.unload();
+  };
+}
+
+function createMpdPlayer(videoElement: HTMLMediaElement, url: string) {
+  const player = dashjs.MediaPlayer().create();
+  player.initialize(videoElement, url, true);
+  player.play();
+
+  return () => {
+    player.pause();
+    player.destroy();
+  };
+}
+
+function createHlsPlayer(videoElement: HTMLMediaElement, url: string) {
+  const player = new Hls();
+
+  player.loadSource(url);
+  player.attachMedia(videoElement);
+
+  player.on(Hls.Events.MEDIA_ATTACHED, function () {
+    videoElement.muted = false;
+    videoElement.play();
+  });
+
+  return () => {
+    player.stopLoad();
+    player.destroy();
+  };
+}
+
+function createNativePlayer(videoElement: HTMLMediaElement, url: string) {
+  videoElement.src = url;
+  videoElement.play();
+
+  return () => {
+    videoElement.pause();
+    videoElement.remove();
+  };
 }

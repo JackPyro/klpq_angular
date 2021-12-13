@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 import { environment } from 'src/environments/environment';
 
-export const STATS_SERVER = environment.STATS_SERVER;
+export const STATS_SERVER = new URL(environment.WSS_URL).host;
 export const MPD_STATS_SERVER = new URL(environment.MPD_URL).host;
 
 const url = (name, app, host) =>
@@ -67,7 +67,6 @@ export class StreamstatService {
   };
   currentChannel = '';
   currentApp = '';
-  currentProtocol = ProtocolsEnum.WSS;
   currentServer;
 
   statsSubject = new BehaviorSubject(this.stats);
@@ -85,12 +84,11 @@ export class StreamstatService {
     );
   }
 
-  setChannel(channel, app, protocol: ProtocolsEnum, server: string) {
+  setChannel(channel, app, server: string) {
     this.stats = {};
 
     this.currentChannel = channel;
     this.currentApp = app;
-    this.currentProtocol = protocol;
     this.currentServer = server;
 
     this.fetchStats(this.currentChannel, this.currentApp, this.currentServer);

@@ -22,7 +22,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 export class MinimalComponent implements OnInit, OnDestroy {
   app = 'live';
   stream = 'main';
-  protocol = ProtocolsEnum.WSS;
+  protocol;
   server = null;
 
   stats = {
@@ -67,7 +67,6 @@ export class MinimalComponent implements OnInit, OnDestroy {
           break;
         }
         default: {
-          this.protocol = ProtocolsEnum.WSS;
           this.server = STATS_SERVER;
 
           break;
@@ -77,12 +76,7 @@ export class MinimalComponent implements OnInit, OnDestroy {
       this.playerInit = false;
       this.initPlayer();
 
-      this.streamStats.setChannel(
-        this.stream,
-        this.app,
-        this.protocol,
-        this.server,
-      );
+      this.streamStats.setChannel(this.stream, this.app, this.server);
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {

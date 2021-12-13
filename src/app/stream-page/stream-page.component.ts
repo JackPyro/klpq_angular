@@ -27,7 +27,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   playerInit = false;
   chatUrl: SafeResourceUrl;
-  stopFnc = null;
+  stopFnc: () => void = null;
 
   paramsSubscription = null;
   subscription = null;
@@ -90,7 +90,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     this.chatUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  initPlayer() {
+  async initPlayer() {
     console.log('initPlayer');
 
     if (this.playerInit) {
@@ -112,7 +112,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
     (playerSelector as any).replaceChildren(videoPlayer);
 
-    this.stopFnc = createPlayer(
+    this.stopFnc = await createPlayer(
       this.app.split('_')[0],
       this.stream,
       this.protocol,

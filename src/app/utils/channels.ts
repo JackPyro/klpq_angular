@@ -1,6 +1,7 @@
 import flv from 'flv.js';
 import * as dashjs from 'dashjs';
 import Hls from 'hls.js';
+import axios from 'axios';
 
 import { environment } from 'src/environments/environment';
 
@@ -8,12 +9,24 @@ export const getLink = (name, app) => {
   return `${environment.WSS_URL}/${app}/${name}.flv`;
 };
 
-export const getMpdLink = (name, app) => {
-  return `${environment.MPD_URL}/mpd/${app}_${name}/index.mpd`;
+export const getMpdLink = async (name, app) => {
+  const {
+    data: { id },
+  } = await axios.get<{ id: string }>(
+    `${environment.MPD_URL}/generate/mpd/${app}_${name}`,
+  );
+
+  return `${environment.MPD_URL}/watch/${id}/index.mpd`;
 };
 
-export const getHlsLink = (name, app) => {
-  return `${environment.MPD_URL}/hls/${app}_${name}/index.m3u8`;
+export const getHlsLink = async (name, app) => {
+  const {
+    data: { id },
+  } = await axios.get<{ id: string }>(
+    `${environment.MPD_URL}/generate/hls/${app}_${name}`,
+  );
+
+  return `${environment.MPD_URL}/watch/${id}/index.m3u8`;
 };
 
 function iOS() {
@@ -31,12 +44,12 @@ function iOS() {
   );
 }
 
-export function createPlayer(
+export async function createPlayer(
   app: string,
   stream: string,
   protocol: string,
   videoElement: HTMLMediaElement,
-) {
+): Promise<() => void> {
   let stopPlaybackFnc = () => {};
 
   switch (protocol) {
@@ -61,7 +74,7 @@ export function createPlayer(
       break;
     }
     case 'mpd': {
-      const url = getMpdLink(stream, app);
+      const url = await getMpdLink(stream, app);
 
       const player = dashjs.MediaPlayer().create();
       player.initialize(videoElement, url, true);
@@ -75,7 +88,7 @@ export function createPlayer(
       break;
     }
     case 'hls': {
-      const url = getHlsLink(stream, app);
+      const url = await getHlsLink(stream, app);
 
       if (iOS()) {
         videoElement.src = url;

@@ -1,6 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProtocolsEnum, StreamstatService } from 'src/app/streamstat.service';
+import {
+  MPD_STATS_SERVER,
+  ProtocolsEnum,
+  STATS_SERVER,
+  StreamstatService,
+} from 'src/app/streamstat.service';
 import {
   createPlayer,
   getHlsLink,
@@ -18,6 +23,7 @@ export class MinimalComponent implements OnInit, OnDestroy {
   app = 'live';
   stream = 'main';
   protocol = ProtocolsEnum.WSS;
+  server = null;
 
   stats = {
     isLive: false,
@@ -50,16 +56,19 @@ export class MinimalComponent implements OnInit, OnDestroy {
       switch (protocol) {
         case 'mpd': {
           this.protocol = ProtocolsEnum.MPD;
+          this.server = MPD_STATS_SERVER;
 
           break;
         }
         case 'hls': {
           this.protocol = ProtocolsEnum.HLS;
+          this.server = MPD_STATS_SERVER;
 
           break;
         }
         default: {
           this.protocol = ProtocolsEnum.WSS;
+          this.server = STATS_SERVER;
 
           break;
         }
@@ -68,7 +77,12 @@ export class MinimalComponent implements OnInit, OnDestroy {
       this.playerInit = false;
       this.initPlayer();
 
-      this.streamStats.setChannel(this.stream, this.app, this.protocol);
+      this.streamStats.setChannel(
+        this.stream,
+        this.app,
+        this.protocol,
+        this.server,
+      );
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {

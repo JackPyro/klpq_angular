@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 import { environment } from 'src/environments/environment';
 
-const STATS_SERVER = environment.STATS_SERVER;
+export const STATS_SERVER = environment.STATS_SERVER;
+export const MPD_STATS_SERVER = new URL(environment.MPD_URL).host;
 
 const url = (name, app, host) =>
   `${environment.STATS_URL}/channels/${host}/${app}/${name}`;
@@ -67,6 +68,7 @@ export class StreamstatService {
   currentChannel = '';
   currentApp = '';
   currentProtocol = ProtocolsEnum.WSS;
+  currentServer;
 
   statsSubject = new BehaviorSubject(this.stats);
   onlineChannels = new BehaviorSubject(this.channels);
@@ -79,18 +81,19 @@ export class StreamstatService {
   initService() {
     const intevalSource = interval(5000);
     intevalSource.subscribe(() =>
-      this.fetchStats(this.currentChannel, this.currentApp),
+      this.fetchStats(this.currentChannel, this.currentApp, this.currentServer),
     );
   }
 
-  setChannel(channel, app, protocol: ProtocolsEnum) {
+  setChannel(channel, app, protocol: ProtocolsEnum, server: string) {
     this.stats = {};
 
     this.currentChannel = channel;
     this.currentApp = app;
     this.currentProtocol = protocol;
+    this.currentServer = server;
 
-    this.fetchStats(this.currentChannel, this.currentApp);
+    this.fetchStats(this.currentChannel, this.currentApp, this.currentServer);
   }
 
   initOnlineChannelSearch() {
@@ -123,13 +126,13 @@ export class StreamstatService {
     });
   }
 
-  fetchStats(channel, app) {
+  fetchStats(channel, app, server: string) {
     if (!channel || !app) {
       this.stats = {};
       return;
     }
 
-    const source = this.http.get(url(channel, app, STATS_SERVER)).pipe(
+    const source = this.http.get(url(channel, app, server)).pipe(
       map((resp) => ({
         ...resp,
         name: channel,

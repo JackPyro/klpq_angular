@@ -66,6 +66,12 @@ export class MinimalComponent implements OnInit, OnDestroy {
 
           break;
         }
+        case 'wss': {
+          this.protocol = ProtocolsEnum.WSS;
+          this.server = STATS_SERVER;
+
+          break;
+        }
         default: {
           this.server = STATS_SERVER;
 

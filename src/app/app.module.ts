@@ -9,6 +9,8 @@ import { StreamstatService } from './streamstat.service';
 import { ChannelPickerComponent } from './components/channel-picker/channel-picker.component';
 import { AngularDropdownModule } from 'angular-dropdown';
 import { MinimalComponent } from './stream-page/minimal/minimal.component';
+import { RedirectComponent } from './redirect-page/redirect-page.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,6 +18,7 @@ import { MinimalComponent } from './stream-page/minimal/minimal.component';
     StreamPageComponent,
     ChannelPickerComponent,
     MinimalComponent,
+    RedirectComponent,
   ],
   providers: [StreamstatService],
   imports: [

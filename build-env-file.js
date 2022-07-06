@@ -11,6 +11,8 @@ const env = {
   STATS_SERVER: process.env.STATS_SERVER,
   WSS_URL: process.env.WSS_URL,
   MPD_URL: process.env.MPD_URL,
+  CURRENT_PAGE: process.env.CURRENT_PAGE,
+  STREAM_PAGE_REDIRECT_URL: process.env.STREAM_PAGE_REDIRECT_URL,
 };
 
 console.log(env);

@@ -11,6 +11,8 @@ export const environment = {
   STATS_SERVER: config.STATS_SERVER,
   WSS_URL: config.WSS_URL,
   MPD_URL: config.MPD_URL,
+  CURRENT_PAGE: config.CURRENT_PAGE,
+  STREAM_PAGE_REDIRECT_URL: config.STREAM_PAGE_REDIRECT_URL,
 };
 
 console.log(environment);

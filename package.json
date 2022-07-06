@@ -8,6 +8,7 @@
     "ng": "ng",
     "start": "yarn run build-env-file && ng serve",
     "build": "yarn run build-env-file && ng build --prod",
+    "build:azure": "yarn run build-env-file && ./node_modules/.bin/ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

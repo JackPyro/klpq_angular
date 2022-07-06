@@ -23,7 +23,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": false,
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/staticwebapp.config.json"
+            ],
             "styles": [
               "src/styles.scss",
               "node_modules/angular-dropdown/styles.scss",

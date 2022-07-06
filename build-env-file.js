@@ -13,6 +13,7 @@ const env = {
   MPD_URL: process.env.MPD_URL,
   CURRENT_PAGE: process.env.CURRENT_PAGE,
   STREAM_PAGE_REDIRECT_URL: process.env.STREAM_PAGE_REDIRECT_URL,
+  MAIN_PAGE_URL: process.env.MAIN_PAGE_URL,
 };
 
 console.log(env);

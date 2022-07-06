@@ -98,6 +98,12 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  redirectHome() {
+    console.log(environment.MAIN_PAGE_URL);
+
+    window.location.href = `${environment.MAIN_PAGE_URL}`;
+  }
+
   getChatUrl() {
     // const url = `${URL}podkolpakom_${this.stream}`;
     const url = environment.CHAT_URL;

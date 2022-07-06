@@ -13,6 +13,7 @@ export const environment = {
   MPD_URL: config.MPD_URL,
   CURRENT_PAGE: config.CURRENT_PAGE,
   STREAM_PAGE_REDIRECT_URL: config.STREAM_PAGE_REDIRECT_URL,
+  MAIN_PAGE_URL: config.MAIN_PAGE_URL,
 };
 
 console.log(environment);

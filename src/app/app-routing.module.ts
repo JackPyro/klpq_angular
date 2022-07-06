@@ -3,65 +3,42 @@ import { Routes, RouterModule } from '@angular/router';
 import { IndexPageComponent } from './index-page/index-page.component';
 import { StreamPageComponent } from './stream-page/stream-page.component';
 import { MinimalComponent } from './stream-page/minimal/minimal.component';
-import { RedirectComponent } from './redirect-page/redirect-page.component';
-import { environment } from 'src/environments/environment';
 
-let routes: Routes = [];
-
-if (environment.CURRENT_PAGE === 'www') {
-  routes.push({
-    path: 'minimal/:stream',
-    component: MinimalComponent,
-  });
-  routes.push({
-    path: 'minimal',
-    component: MinimalComponent,
-  });
-  routes.push({
-    path: 'stream',
-    component: RedirectComponent,
-    children: [
-      {
-        path: '**',
-        component: RedirectComponent,
-      },
-    ],
-  });
-  routes.push({
-    path: 'stream',
-    component: RedirectComponent,
-  });
-  routes.push({
+const routes: Routes = [
+  {
     path: '',
     component: IndexPageComponent,
-  });
-}
-
-if (environment.CURRENT_PAGE === 'stream') {
-  routes.push({
-    path: ':app/:stream/:protocol',
+  },
+  {
+    path: 'stream/:app/:stream/:protocol',
     component: StreamPageComponent,
-  });
-  routes.push({
-    path: ':app/:stream',
+  },
+  {
+    path: 'stream/:app/:stream',
     component: StreamPageComponent,
-  });
-  routes.push({
-    path: ':stream',
+  },
+  {
+    path: 'stream/:stream',
     component: StreamPageComponent,
-  });
-  routes.push({
-    path: '',
+  },
+  {
+    path: 'stream',
     component: StreamPageComponent,
-  });
-  routes.push();
-}
-
-// routes.push({
-//   path: '**',
-//   redirectTo: '/',
-//   pathMatch: 'full',
-// });
+  },
+  {
+    path: 'minimal/:stream',
+    component: MinimalComponent,
+  },
+  {
+    path: 'minimal',
+    component: MinimalComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+    pathMatch: 'full',
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

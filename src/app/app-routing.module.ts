@@ -3,8 +3,64 @@ import { Routes, RouterModule } from '@angular/router';
 import { IndexPageComponent } from './index-page/index-page.component';
 import { StreamPageComponent } from './stream-page/stream-page.component';
 import { MinimalComponent } from './stream-page/minimal/minimal.component';
+import { RedirectComponent } from './redirect-page/redirect-page.component';
+import { environment } from 'src/environments/environment';
 
-const routes: Routes = [
+const routesWww = [
+  {
+    path: '',
+    component: IndexPageComponent,
+  },
+  {
+    path: 'stream',
+    component: RedirectComponent,
+    children: [
+      {
+        path: '**',
+        component: RedirectComponent,
+      },
+    ],
+  },
+  {
+    path: 'minimal/:stream',
+    component: MinimalComponent,
+  },
+  {
+    path: 'minimal',
+    component: MinimalComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+    pathMatch: 'full',
+  },
+];
+
+const routesStream = [
+  {
+    path: '',
+    component: StreamPageComponent,
+  },
+  {
+    path: ':app/:stream/:protocol',
+    component: StreamPageComponent,
+  },
+  {
+    path: ':app/:stream',
+    component: StreamPageComponent,
+  },
+  {
+    path: ':stream',
+    component: StreamPageComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+    pathMatch: 'full',
+  },
+];
+
+const routesDefault: Routes = [
   {
     path: '',
     component: IndexPageComponent,
@@ -41,7 +97,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports:
+    environment.CURRENT_PAGE === 'www'
+      ? [RouterModule.forRoot(routesWww)]
+      : [RouterModule.forRoot(routesStream)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

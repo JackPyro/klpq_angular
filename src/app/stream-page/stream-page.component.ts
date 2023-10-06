@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 export class StreamPageComponent implements OnInit, OnDestroy {
   app = 'live';
   stream = 'main';
-  protocol;
+  protocol: ProtocolsEnum = null;
   server = null;
 
   stats = {
@@ -71,6 +71,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
           break;
         }
         default: {
+          this.protocol = null;
           this.server = STATS_SERVER;
 
           break;
@@ -111,6 +112,10 @@ export class StreamPageComponent implements OnInit, OnDestroy {
   }
 
   async initPlayer() {
+    if (this.stopFnc) {
+      this.stopFnc();
+    }
+
     console.log('initPlayer');
 
     if (this.playerInit) {
@@ -121,16 +126,14 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
     const playerSelector = document.getElementsByClassName('player-section')[0];
 
-    if (this.stopFnc) {
-      this.stopFnc();
-    }
-
     const videoPlayer = document.createElement('video');
 
     videoPlayer.setAttribute('id', 'player');
     videoPlayer.setAttribute('controls', 'true');
 
     (playerSelector as any).replaceChildren(videoPlayer);
+
+    console.log('loading player', this.app, this.stream, this.protocol);
 
     this.stopFnc = await createPlayer(
       this.app.split('_')[0],

@@ -10,6 +10,8 @@ export const getLink = (name, app) => {
 };
 
 export const getMpdLink = async (name, app) => {
+  console.log('get mpd link', name, app);
+
   const {
     data: { id },
   } = await axios.get<{ id: string }>(
@@ -20,6 +22,8 @@ export const getMpdLink = async (name, app) => {
 };
 
 export const getHlsLink = async (name, app) => {
+  console.log('get hls link', name, app);
+
   const {
     data: { id },
   } = await axios.get<{ id: string }>(
@@ -119,6 +123,8 @@ export async function createPlayer(
 }
 
 function createWssPlayer(videoElement: HTMLMediaElement, url: string) {
+  console.log('createWssPlayer', url);
+
   const player = flv.createPlayer({
     type: 'flv',
     url,
@@ -130,23 +136,31 @@ function createWssPlayer(videoElement: HTMLMediaElement, url: string) {
   player.play();
 
   return () => {
+    console.log('stop wss player');
+
     player.pause();
     player.unload();
   };
 }
 
 function createMpdPlayer(videoElement: HTMLMediaElement, url: string) {
+  console.log('createMpdPlayer', url);
+
   const player = dashjs.MediaPlayer().create();
   player.initialize(videoElement, url, true);
   player.play();
 
   return () => {
+    console.log('stop mpd player');
+
     player.pause();
     player.destroy();
   };
 }
 
 function createHlsPlayer(videoElement: HTMLMediaElement, url: string) {
+  console.log('createHlsPlayer', url);
+
   const player = new Hls();
 
   player.loadSource(url);
@@ -158,16 +172,22 @@ function createHlsPlayer(videoElement: HTMLMediaElement, url: string) {
   });
 
   return () => {
+    console.log('stop hls player');
+
     player.stopLoad();
     player.destroy();
   };
 }
 
 function createNativePlayer(videoElement: HTMLMediaElement, url: string) {
+  console.log('createNativePlayer', url);
+
   videoElement.src = url;
   videoElement.play();
 
   return () => {
+    console.log('stop native player');
+
     videoElement.pause();
     videoElement.remove();
   };

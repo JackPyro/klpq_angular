@@ -5,6 +5,7 @@ import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 
 export const STATS_SERVER = new URL(environment.WSS_URL).host;
 export const MPD_STATS_SERVER = new URL(environment.MPD_URL).host;
@@ -119,6 +120,9 @@ export class StreamstatService {
 
         return !liveChannel;
       });
+
+      this.channels.online = _.sortBy(this.channels.online).reverse();
+      this.channels.offline = _.sortBy(this.channels.offline);
 
       this.onlineChannels.next(this.channels);
     });

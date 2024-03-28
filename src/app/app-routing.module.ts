@@ -4,9 +4,9 @@ import { IndexPageComponent } from './index-page/index-page.component';
 import { StreamPageComponent } from './stream-page/stream-page.component';
 import { MinimalComponent } from './stream-page/minimal/minimal.component';
 import { RedirectComponent } from './redirect-page/redirect-page.component';
-import { environment } from 'src/environments/environment';
+import environment from 'src/environments/environment';
 
-const routesWww = [
+const routesWww: Routes = [
   {
     path: '',
     component: IndexPageComponent,
@@ -36,7 +36,7 @@ const routesWww = [
   },
 ];
 
-const routesStream = [
+const routesStream: Routes = [
   {
     path: '',
     component: StreamPageComponent,
@@ -97,10 +97,12 @@ const routesDefault: Routes = [
 ];
 
 @NgModule({
-  imports:
-    environment.CURRENT_PAGE === 'www'
-      ? [RouterModule.forRoot(routesWww)]
-      : [RouterModule.forRoot(routesStream)],
+  imports: [
+    RouterModule.forRoot(
+      environment.CURRENT_PAGE === 'www' ? routesWww : routesStream,
+      {},
+    ),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

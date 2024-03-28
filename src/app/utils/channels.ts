@@ -3,7 +3,7 @@ import * as dashjs from 'dashjs';
 import Hls from 'hls.js';
 import axios from 'axios';
 
-import { environment } from 'src/environments/environment';
+import environment from '../../environments/environment';
 
 export const getLink = (name, app) => {
   return `${environment.WSS_URL}/${app}/${name}.flv`;
@@ -58,7 +58,7 @@ export async function createPlayer(
   protocol: string,
   videoElement: HTMLMediaElement,
 ): Promise<() => void> {
-  let stopPlaybackFnc = () => {};
+  let stopPlaybackFnc = () => null;
 
   switch (protocol) {
     case 'wss': {
@@ -166,7 +166,7 @@ function createHlsPlayer(videoElement: HTMLMediaElement, url: string) {
   player.loadSource(url);
   player.attachMedia(videoElement);
 
-  player.on(Hls.Events.MEDIA_ATTACHED, function () {
+  player.on(Hls.Events.MEDIA_ATTACHED, () => {
     videoElement.muted = false;
     videoElement.play();
   });

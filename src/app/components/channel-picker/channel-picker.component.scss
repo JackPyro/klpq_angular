@@ -1,9 +1,8 @@
 .live-btn {
-  padding: 5px 20px;
-  background: #438543;
   width: 100%;
-  min-width: 200px;
-  margin-right: 20px;
+  padding: 0.25em;
+  background: #064e3b;
+  text-align: center;
   outline: none;
   border-color: transparent;
   cursor: pointer;
@@ -11,7 +10,7 @@
   font-weight: bold;
 
   &.active {
-    background: #336733;
+    background: #047857;
   }
 }
 
@@ -25,9 +24,10 @@
   justify-self: right;
   font-weight: bold;
   display: flex;
+  font-size: 12px;
   align-items: center;
   background-color: #770c06;
-  padding: 7px;
+  padding: 0.5em;
   border-radius: 5px;
   .tower-icon {
     font-size: 12px;
@@ -39,6 +39,7 @@
   height: 30px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   &:hover {
     background-color: #dddddd;
@@ -55,6 +56,8 @@
   }
 
   &.offline {
+    height: 15px;
+    padding: 0.25em 0em;
     .channel-link {
       color: #4d4d4d;
     }
@@ -71,5 +74,40 @@
     text-decoration: none;
     font-weight: bold;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    align-items: center;
   }
+}
+.select {
+  width: 100%;
+}
+
+.content {
+  position: relative;
+  width: 75%;
+  margin: 0em 0.5em;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  flex-basis: 50%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 100%;
+  padding: 0.25em;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content.isOpen {
+  display: block;
 }

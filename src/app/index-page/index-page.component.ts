@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Route, Router } from '@angular/router';
+import { EngineService } from './engine.service';
 
 @Component({
   selector: 'app-index-page',
@@ -8,7 +8,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./index-page.component.scss'],
 })
 export class IndexPageComponent implements OnInit {
-  constructor(private router: Router) {}
+  composer = null;
+  renderer = null;
+  @ViewChild('rendererCanvas', { static: true })
+  public rendererCanvas: ElementRef<HTMLCanvasElement>;
 
-  ngOnInit() {}
+  public constructor(private engServ: EngineService, private router: Router) {}
+
+  public ngOnInit(): void {
+    this.engServ.createScene(this.rendererCanvas);
+    this.engServ.animate();
+  }
+
+  public playSound() {
+    setTimeout(() => {
+      this.engServ.playAudio();
+    }, 0);
+  }
 }

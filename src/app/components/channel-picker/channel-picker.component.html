@@ -1,15 +1,48 @@
-<span class="live-channels" title="Live Channels"
-  ><i class="tower-icon fas fa-signal"></i> {{ online.length || 0 }}
-</span>
+<!-- 
 <div ngDropdown [renderInPlace]="true" [horizontalPosition]="'center'">
   <button class="live-btn" ngDropdownControl>Change Channel</button>
   <div ngDropdownContent dropdownClass="slide-fade dropper">
     <div *ngIf="!isLoading" class="channel-list">
       <div class="channel-item online" *ngFor="let channel of online">
         <a routerLink="/{{ channel }}" class="channel-link"
-          >{{ channel }} <span class="live-status">LIVE</span></a
-        >
+          >{{ channel }} 
       </div>
+      
+    </div>
+  </div>
+</div> -->
+
+<!-- Using ng-option and for loop
+<ng-select [(ngModel)]="selectedChannel" class="select">
+  <ng-option  [value]="channel">{{channel}}
+    
+  </ng-option>
+      <ng-option *ngFor="let channel of offline" [value]="channel">
+        
+      </ng-option>
+</ng-select> -->
+
+<span class="live-channels" title="Live Channels"
+  ><i class="tower-icon fas fa-signal"></i> {{ online.length || 0 }}
+</span>
+<div class="content">
+  <div
+    #toggleButton
+    [class.active]="isMenuOpen"
+    class="live-btn"
+    (click)="toggleMenu()"
+  >
+    Channels
+  </div>
+  <div #menu class="dropdown-content slide-fade" [class.isOpen]="isMenuOpen">
+    <div *ngIf="!isLoading" class="channel-list">
+      <div class="channel-item online" *ngFor="let channel of online">
+        <a routerLink="/{{ channel }}" class="channel-link"
+          >{{ channel }} <span class="live-status">LIVE</span>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="!isLoading" class="channel-list">
       <div class="channel-item offline" *ngFor="let channel of offline">
         <a routerLink="/{{ channel }}" class="channel-link">{{ channel }}</a>
       </div>

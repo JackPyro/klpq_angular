@@ -1,6 +1,131 @@
-<div class="main-body">
-  <h1 class="title">KLPQ</h1>
-  <h4 class="subtitle">WHAT YEAR IS THIS?</h4>
-
-  <!-- <a class="stream-link" routerLink="/stream">Stream Page</a> -->
+<div
+  class="main-body"
+  role="img"
+  id="renderer"
+  (keydown)="playSound()"
+  (click)="playSound()"
+>
+  <div class="title" id="title">KLPQ</div>
+  <canvas #rendererCanvas id="renderCanvas"></canvas>
 </div>
+
+<video
+  id="video1"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/1.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video2"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/2.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video3"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/3.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video4"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/4.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video5"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/5.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video6"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/6.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video7"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/7.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video8"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/8.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video9"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/9.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>
+<video
+  id="video10"
+  loop
+  crossOrigin="anonymous"
+  playsinline
+  style="display: none"
+>
+  <source
+    src="assets/images/index/10.mp4"
+    type='video/ogg; codecs="theora, vorbis"'
+  />
+</video>

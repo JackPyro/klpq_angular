@@ -1,19 +1,21 @@
-<div class="bg">
+<div class="container">
   <div class="navigation">
-    <a class="back-link">
-      <span
-        class="fas fa-arrow-circle-left back-button"
+    <a class="back-link" tabIndex="{0}" role="img">
+      <img
+        alt="text"
+        role="img"
+        src="/assets/images/stream/klpq.svg"
+        class="back-img"
         (click)="redirectHome()"
-      ></span>
+        (keydown)="redirectHome()"
+      />
     </a>
     <div class="channel-name">{{ stream }} channel</div>
     <app-channel-picker class="channel-switch-wrap"></app-channel-picker>
   </div>
   <div class="main-area">
-    <div class="player-section">
-      <video id="player" controls></video>
-    </div>
-    <div class="chat-section" *ngIf="chatUrl">
+    <div class="player-section" [class.full]="!showChat"></div>
+    <div class="chat-section" *ngIf="chatUrl && showChat">
       <iframe
         width="100%"
         height="640"
@@ -22,27 +24,33 @@
         [src]="chatUrl"
       ></iframe>
     </div>
-    <div class="utility-section">
-      <div class="stats">
-        <div class="stat" *ngIf="stats.isLive">
-          <span class="fas fa-users"></span>
-          <span> {{ stats.viewers || 0 }}</span>
-        </div>
-        <div class="stat" *ngIf="stats.isLive">
-          <span class="fas fa-signal"></span>
-          <span> {{ stats.lastBitrate || 0 }}</span>
-        </div>
-        <div class="stat" *ngIf="stats.isLive">
-          <span class="fas fa-clock"></span>
-          <span> {{ stats.duration }}</span>
-        </div>
-        <div class="stat" *ngIf="stats.isLive">
-          <span class="fas fa-hourglass-half"></span>
-          <span> {{ stats.startTime | date: 'shortTime' }}</span>
-        </div>
+  </div>
+
+  <div class="footer">
+    <div class="stats">
+      <div class="stat" *ngIf="stats.isLive">
+        <span class="fas fa-users"></span>
+        <span> {{ stats.viewers || 0 }}</span>
+      </div>
+      <div class="stat" *ngIf="stats.isLive">
+        <span class="fas fa-signal"></span>
+        <span> {{ stats.lastBitrate || 0 }}</span>
+      </div>
+      <div class="stat" *ngIf="stats.isLive">
+        <span class="fas fa-clock"></span>
+        <span> {{ stats.duration }}</span>
+      </div>
+      <div class="stat" *ngIf="stats.isLive">
+        <span class="fas fa-hourglass-half"></span>
+        <span> {{ stats.startTime | date: 'shortTime' }}</span>
       </div>
     </div>
     <div class="under-chat-section" *ngIf="chatUrl">
+      <div (click)="toggleChat()" (keydown)="toggleChat()" role="img">
+        <span *ngIf="showChat; then chatVisible; else chatNotVisible"></span>
+        <ng-template #chatVisible>Hide Chat</ng-template>
+        <ng-template #chatNotVisible>Show Chat</ng-template>
+      </div>
       <a [href]="chatUrl" target="_blank" class="expand-chat"
         ><i class="fas fa-external-link-alt"></i> Open chat</a
       >

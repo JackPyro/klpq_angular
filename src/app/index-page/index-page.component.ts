@@ -13,9 +13,7 @@ export class IndexPageComponent implements OnInit {
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement>;
 
-  public constructor(private engServ: EngineService, private router: Router) {
-   
-  }
+  public constructor(private engServ: EngineService, private router: Router) {}
 
   public ngOnInit(): void {
     this.engServ.createScene(this.rendererCanvas);

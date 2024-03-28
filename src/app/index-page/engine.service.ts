@@ -35,6 +35,7 @@ export class EngineService implements OnDestroy {
   private scene: THREE.Scene;
   private light: THREE.AmbientLight;
   public isStarted = false;
+  public hasAudioLoaded = false;
 
   private frameId: number = null;
 
@@ -52,9 +53,10 @@ export class EngineService implements OnDestroy {
   }
 
   public async playAudio() {
-    if (this.isStarted) {
+    if (this.isStarted || !this.hasAudioLoaded) {
       return;
     }
+    console.log(this.sound)
     this.sound.play();
     this.isStarted = true;
   }
@@ -92,7 +94,8 @@ export class EngineService implements OnDestroy {
     audioLoader.load('/assets/images/index/audio.mp3', (buffer) => {
       this.sound.setBuffer(buffer);
       this.sound.setRefDistance(20);
-      this.sound.setLoop(true)
+      this.sound.setLoop(true);
+      this.hasAudioLoaded = true
     });
 
     this.composer = new EffectComposer(this.renderer);

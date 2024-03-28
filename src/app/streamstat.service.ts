@@ -110,15 +110,15 @@ export class StreamstatService {
     source.subscribe((data: IListResponse) => {
       this.channels.online = [];
 
-      data.live.map((item) => {
-        this.channels.online.push(`${item.app}/${item.channel}`);
-      });
-      this.channels.offline = data.channels.filter((item) => {
-        const liveChannel = find(this.channels.online, (channel) =>
-          channel.includes(`/${item}`),
-        );
+      console.log(data);
 
-        return !liveChannel;
+      data.live.map((item) => {
+        if (!this.channels.online.includes(item.channel)) {
+          this.channels.online.push(item.channel);
+        }
+      });
+      this.channels.offline = data.channels.filter((channelName) => {
+        return !this.channels.online.includes(channelName);
       });
 
       this.channels.online = _.sortBy(this.channels.online).reverse();

@@ -142,4 +142,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       videoPlayer,
     );
   }
+
+  populateDropdown() {}
 }

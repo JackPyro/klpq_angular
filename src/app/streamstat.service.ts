@@ -4,7 +4,7 @@ import humanizeDuration from 'humanize-duration';
 import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { find } from 'lodash';
-import { environment } from 'src/environments/environment';
+import environment from 'src/environments/environment';
 import * as _ from 'lodash';
 
 export const STATS_SERVER = new URL(environment.WSS_URL).host;

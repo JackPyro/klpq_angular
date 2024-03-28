@@ -1,103 +1,82 @@
-.bg {
-  background-color: #292b2c !important;
+.container {
+  background-color: #030712;
+  display: flex;
+  flex-direction: column;
+  color: white;
   width: 100%;
   height: 100%;
 }
 
-.back-link {
-  justify-self: left;
-}
-
-.back-button {
-  color: white;
-  font-size: 2.5rem !important;
-}
-
-.back-button:hover {
-  color: white;
-  cursor: pointer;
-}
-
 .navigation {
-  height: 60px;
   display: grid;
-  margin: 0 15px;
-  grid: 1fr/ 1fr 1fr 1fr;
+  grid: 1fr / 1fr 2fr 1fr;
+  gap: 2em;
+  background-color: #18181b;
+  padding: 0.5em;
   align-items: center;
-
-  & .btn:not(:first-child) {
-    margin-left: 5px;
+  .back-link {
+    padding-left: 0.25em;
   }
-}
-
-.player-section {
-  height: 640px;
-  background-color: black;
-}
-
-.channel-name {
-  font-size: 2.5rem !important;
-  text-transform: uppercase;
-  font-weight: lighter;
-  color: white;
-  justify-self: center;
-}
-
-.channel-switch-wrap {
-  justify-self: right;
-  display: grid;
-  grid: 1fr / 2fr 1fr;
-  align-items: center;
-  grid-gap: 10px;
-}
-
-.btn {
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.25;
-  text-align: center;
-  border: 1px solid #ccc;
-  white-space: nowrap;
-  vertical-align: middle;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  color: white;
-  text-decoration: none;
-  border-radius: 0.2rem;
-  &.active {
-    background-color: #5cb85c;
-    border-color: #5cb85c;
+  .back-img {
+    height: 32px;
+    cursor: pointer;
   }
-}
+  .channel-name {
+    text-align: center;
+    text-transform: uppercase;
+  }
 
-:host::ng-deep #player {
-  width: 100%;
-  height: 640px;
-  background-color: black;
-}
-
-.stats {
-  color: white;
-  display: flex;
-  margin-top: 1em;
-}
-
-.stat {
-  margin-right: 1.5rem;
+  .channel-switch-wrap {
+    display: flex;
+    justify-content: end;
+  }
 }
 
 .main-area {
-  margin: 0 15px;
-  display: grid;
-  grid: 640px 1fr / 4fr 1fr;
+  margin-top: 0.5em;
+  gap: 1em;
+  flex-grow: 1;
+  display: flex;
+  height: calc(100% - 100px);
+  align-items: stretch;
+
+  .player-section {
+    background-color: black;
+    &.full {
+      flex-grow: 1;
+      grid-column: span 4 / span 4;
+    }
+    grid-column: span 3 / span 3;
+    #player {
+      width: 100%;
+    }
+  }
+
+  .chat-section {
+    background-color: white;
+    flex-basis: 30%;
+  }
 }
 
-.under-chat-section {
-  margin-top: 1em;
-}
-
-.expand-chat {
-  color: white !important;
-  cursor: pointer;
-  text-decoration: none !important;
+.footer {
+  background-color: #18181b;
+  margin-top: 0.5em;
+  .stats {
+    display: flex;
+    gap: 1em;
+  }
+  .under-chat-section {
+    display: flex;
+    gap: 1em;
+  }
+  .expand-chat {
+    color: white;
+    text-transform: none;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

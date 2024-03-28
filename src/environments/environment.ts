@@ -2,9 +2,9 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import * as config from '../../.env.json';
+import { default as config } from '../../.env.json';
 
-export const environment = {
+const environment = {
   production: config.NODE_ENV === 'production',
   CHAT_URL: config.CHAT_URL,
   STATS_URL: config.STATS_URL,
@@ -25,4 +25,6 @@ console.log(environment);
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+
+export default environment;

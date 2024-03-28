@@ -5,11 +5,12 @@ import {
   ProtocolsEnum,
   STATS_SERVER,
   StreamstatService,
-} from 'src/app/streamstat.service';
+} from '../streamstat.service';
 import { createPlayer } from '../utils/channels';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import { environment } from 'src/environments/environment';
+import environment from '../../environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-stream-page',
@@ -19,8 +20,9 @@ import { environment } from 'src/environments/environment';
 export class StreamPageComponent implements OnInit, OnDestroy {
   app = 'live';
   stream = 'main';
-  protocol: ProtocolsEnum = null;
-  server = null;
+  protocol: ProtocolsEnum | string | null = null;
+  server: string | null = null;
+  showChat = false;
 
   stats = {
     isLive: false,
@@ -33,10 +35,10 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   playerInit = false;
   chatUrl: SafeResourceUrl;
-  stopFnc: () => void = null;
+  stopFnc: (() => void) | null = null;
 
   paramsSubscription = null;
-  subscription = null;
+  subscription: Subscription | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,6 +50,8 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params) => {
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
+
+      this.showChat = localStorage.getItem('showChat') === 'true';
 
       const [, protocol] = (params.app || '').split('_');
 
@@ -99,6 +103,11 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleChat() {
+    this.showChat = !this.showChat;
+    localStorage.setItem('showChat', String(this.showChat));
+  }
+
   redirectHome() {
     console.log(environment.MAIN_PAGE_URL);
 
@@ -138,7 +147,7 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     this.stopFnc = await createPlayer(
       this.app.split('_')[0],
       this.stream,
-      this.protocol,
+      this.protocol as string,
       videoPlayer,
     );
   }

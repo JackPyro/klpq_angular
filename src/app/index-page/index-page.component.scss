@@ -6,7 +6,6 @@
   background-size: cover;
   flex-direction: column;
   background-position: center center;
-  user-select: none;
 }
 
 .title {
@@ -15,4 +14,6 @@
   opacity: 0.04;
   font-size: 20rem;
   font-weight: bold;
+
+  user-select: none;
 }

@@ -55,7 +55,6 @@ export class EngineService implements OnDestroy {
     if (this.isStarted) {
       return;
     }
-    this.sound.stop();
     this.sound.play();
     this.isStarted = true;
   }
@@ -93,7 +92,7 @@ export class EngineService implements OnDestroy {
     audioLoader.load('/assets/images/index/audio.mp3', (buffer) => {
       this.sound.setBuffer(buffer);
       this.sound.setRefDistance(20);
-      this.sound.play();
+      this.sound.setLoop(true)
     });
 
     this.composer = new EffectComposer(this.renderer);

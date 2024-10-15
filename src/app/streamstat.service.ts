@@ -105,7 +105,11 @@ export class StreamstatService {
 
   fetchChannels() {
     const listUrl = `${environment.STATS_URL}/channels/list`;
-    const source = this.http.get(listUrl);
+    const source = this.http.get(listUrl, {
+      headers: {
+        'jwt-token': window.localStorage.getItem('token') ?? '',
+      },
+    });
 
     source.subscribe((data: IListResponse) => {
       this.channels.online = [];
@@ -134,13 +138,19 @@ export class StreamstatService {
       return;
     }
 
-    const source = this.http.get(url(channel, app, server)).pipe(
-      map((resp) => ({
-        ...resp,
-        name: channel,
-        duration: fixTime((resp as Stats).duration),
-      })),
-    );
+    const source = this.http
+      .get(url(channel, app, server), {
+        headers: {
+          'jwt-token': window.localStorage.getItem('token') ?? '',
+        },
+      })
+      .pipe(
+        map((resp) => ({
+          ...resp,
+          name: channel,
+          duration: fixTime((resp as Stats).duration),
+        })),
+      );
 
     source.subscribe((data) => {
       this.stats = data;

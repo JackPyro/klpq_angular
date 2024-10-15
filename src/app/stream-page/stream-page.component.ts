@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import {
   MPD_STATS_SERVER,
   ProtocolsEnum,
@@ -35,12 +35,14 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
   playerInit = false;
   chatUrl: SafeResourceUrl;
+  loginUrl: SafeResourceUrl;
   stopFnc: (() => void) | null = null;
 
   paramsSubscription = null;
   subscription: Subscription | null = null;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private streamStats: StreamstatService,
     private sanitizer: DomSanitizer,
@@ -86,12 +88,25 @@ export class StreamPageComponent implements OnInit, OnDestroy {
 
       this.initPlayer();
       this.getChatUrl();
+      this.getLoginUrl();
 
       this.streamStats.setChannel(this.stream, this.app, this.server);
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {
       this.stats = stats as any;
+    });
+
+    this.route.queryParams.subscribe((query) => {
+      console.log('query', query);
+
+      if (query.token) {
+        localStorage.setItem('token', query.token);
+
+        this.router.navigate(['/'], {
+          queryParams: {},
+        });
+      }
     });
   }
 
@@ -118,6 +133,16 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     // const url = `${URL}podkolpakom_${this.stream}`;
     const url = environment.CHAT_URL;
     this.chatUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  getLoginUrl() {
+    const redirectUri = `${environment.STREAM_PAGE_REDIRECT_URL}/login?token=`;
+
+    this.loginUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `${
+        environment.STATS_URL
+      }/users/auth/google?redirectUri=${encodeURIComponent(redirectUri)}`,
+    );
   }
 
   async initPlayer() {

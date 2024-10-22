@@ -1,3 +1,3 @@
 # Klpq Angular
 
-Complete rewrite of original klpq.man design
+Complete rewrite of original klpq.io design

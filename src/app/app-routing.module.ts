@@ -39,7 +39,7 @@ const routesWww: Routes = [
 const routesStream: Routes = [
   {
     path: '',
-    component: StreamPageComponent,
+    component: IndexPageComponent,
   },
   {
     path: ':app/:stream/:protocol',

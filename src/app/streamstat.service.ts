@@ -99,37 +99,34 @@ export class StreamstatService {
     this.fetchChannels();
 
     const invervalSource = interval(5000);
+
     invervalSource.subscribe(() => this.fetchChannels());
+
     return;
   }
 
   fetchChannels() {
-    const listUrl = `${environment.STATS_URL}/channels/list`;
-    const source = this.http.get(listUrl, {
-      headers: {
-        'jwt-token': window.localStorage.getItem('token') ?? '',
-      },
+    let openedChannelsJson = localStorage.getItem('channels');
+
+    let openedChannels = [];
+
+    if (!openedChannelsJson) {
+      localStorage.setItem('channels', '[]');
+    } else {
+      openedChannels = JSON.parse(openedChannelsJson);
+    }
+
+    this.channels.online = [];
+
+    this.channels.offline = openedChannels.filter((item) => {
+      const liveChannel = find(this.channels.online, (channel) =>
+        channel.includes(`/${item}`),
+      );
+
+      return !liveChannel;
     });
 
-    source.subscribe((data: IListResponse) => {
-      this.channels.online = [];
-
-      data.live.map((item) => {
-        this.channels.online.push(`${item.app}/${item.channel}`);
-      });
-      this.channels.offline = data.channels.filter((item) => {
-        const liveChannel = find(this.channels.online, (channel) =>
-          channel.includes(`/${item}`),
-        );
-
-        return !liveChannel;
-      });
-
-      this.channels.online = _.sortBy(this.channels.online).reverse();
-      this.channels.offline = _.sortBy(this.channels.offline);
-
-      this.onlineChannels.next(this.channels);
-    });
+    this.onlineChannels.next(this.channels);
   }
 
   fetchStats(channel, app, server: string) {

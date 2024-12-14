@@ -8,6 +8,7 @@ import {
 } from '../streamstat.service';
 import { createPlayer } from '../utils/channels';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as _ from 'lodash';
 
 import environment from '../../environments/environment';
 import { Subscription } from 'rxjs';
@@ -52,6 +53,20 @@ export class StreamPageComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params) => {
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
+
+      let openedChannelsJson = localStorage.getItem('channels');
+
+      let openedChannels = [];
+
+      if (!openedChannelsJson) {
+        localStorage.setItem('channels', '[]');
+      } else {
+        openedChannels = JSON.parse(openedChannelsJson);
+      }
+
+      openedChannels.push(this.stream);
+
+      localStorage.setItem('channels', JSON.stringify(_.uniq(openedChannels)));
 
       this.showChat = localStorage.getItem('showChat') === 'true';
 

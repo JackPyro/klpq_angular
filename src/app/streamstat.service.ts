@@ -1,19 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import humanizeDuration from 'humanize-duration';
-import { BehaviorSubject, interval } from 'rxjs';
+import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { find } from 'lodash';
 import environment from 'src/environments/environment';
 import * as _ from 'lodash';
+import axios from 'axios';
 
-export const STATS_SERVER = new URL(environment.WSS_URL).host;
-export const MPD_STATS_SERVER = new URL(environment.MPD_URL).host;
+export const STATS_SERVER = new URL(environment.WSS_URL).hostname;
+export const MPD_STATS_SERVER = new URL(environment.MPD_URL).hostname;
 
 const url = (name, app, host) =>
   `${environment.STATS_URL}/channels/${host}/${app}/${name}`;
 
-const fixTime = (duration) =>
+const fixTime = (duration: number) =>
   humanizeDuration(duration * 1000, {
     round: true,
     largest: 2,
@@ -41,11 +42,11 @@ export enum ProtocolsEnum {
 }
 
 interface Stats {
-  duration: any;
-  viewers: any;
+  duration: number;
+  viewers: number;
   isLive: boolean;
-  startTime: any;
-  name: any;
+  startTime: string;
+  name: string;
 }
 
 interface IListResponse {
@@ -62,76 +63,151 @@ interface IListResponse {
 export class StreamstatService {
   stats = {};
 
-  channels: { online: string[]; offline: string[] } = {
+  openedChannels: string[] = [];
+
+  channels: {
+    online: string[];
+    offline: string[];
+    qualityLive: string[];
+    qualityOffline: string[];
+  } = {
     online: [],
     offline: [],
+    qualityLive: [],
+    qualityOffline: [],
   };
   currentChannel = '';
   currentApp = '';
-  currentServer;
+  currentServer = '';
 
   statsSubject = new BehaviorSubject(this.stats);
   onlineChannels = new BehaviorSubject(this.channels);
 
+  intervalSource: Subscription;
+
   constructor(private http: HttpClient) {
     this.initService();
-    this.initOnlineChannelSearch();
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
+
+    if (this.intervalSource) {
+      this.intervalSource.unsubscribe();
+    }
   }
 
   initService() {
-    const intevalSource = interval(5000);
-    intevalSource.subscribe(() =>
-      this.fetchStats(this.currentChannel, this.currentApp, this.currentServer),
-    );
+    this.intervalSource = interval(30000).subscribe(() => {
+      this.fetchStats(this.currentChannel, this.currentApp, this.currentServer);
+
+      this.fetchChannels();
+    });
   }
 
-  setChannel(channel, app, server: string) {
+  setChannel(channel: string, app: string, server: string) {
     this.stats = {};
 
     this.currentChannel = channel;
     this.currentApp = app;
     this.currentServer = server;
 
-    this.fetchStats(this.currentChannel, this.currentApp, this.currentServer);
-  }
+    console.log('currentChannel', this.currentChannel);
 
-  initOnlineChannelSearch() {
-    this.fetchChannels();
+    if (this.currentChannel) {
+      this.openedChannels.push(this.currentChannel);
 
-    const invervalSource = interval(5000);
+      let openedChannelsJson = localStorage.getItem('channels');
 
-    invervalSource.subscribe(() => this.fetchChannels());
+      if (openedChannelsJson) {
+        this.openedChannels = [
+          ...this.openedChannels,
+          ...JSON.parse(openedChannelsJson),
+        ];
+      }
 
-    return;
-  }
+      this.openedChannels = _.uniq(this.openedChannels);
 
-  fetchChannels() {
-    let openedChannelsJson = localStorage.getItem('channels');
-
-    let openedChannels = [];
-
-    if (!openedChannelsJson) {
-      localStorage.setItem('channels', '[]');
-    } else {
-      openedChannels = JSON.parse(openedChannelsJson);
+      localStorage.setItem('channels', JSON.stringify(this.openedChannels));
     }
 
-    this.channels.online = [];
+    this.fetchStats(this.currentChannel, this.currentApp, this.currentServer);
+    this.fetchChannels();
+  }
 
-    this.channels.offline = openedChannels.filter((item) => {
-      const liveChannel = find(this.channels.online, (channel) =>
-        channel.includes(`/${item}`),
-      );
+  async fetchChannels() {
+    const liveChannels: string[] = [];
+    const offlineChannels: string[] = [];
 
-      return !liveChannel;
-    });
+    const qualityLive: string[] = [];
+    const qualityOffline: string[] = [];
+
+    for (const channelName of this.openedChannels) {
+      try {
+        const {
+          data: { isLive },
+        } = await axios.get<Stats>(
+          url(channelName, 'live', this.currentServer),
+        );
+
+        if (isLive) {
+          liveChannels.push(channelName);
+        } else {
+          offlineChannels.push(channelName);
+        }
+      } catch (error) {
+        offlineChannels.push(channelName);
+      }
+    }
+
+    for (const qualityName of [
+      {
+        server: STATS_SERVER,
+        app: 'live',
+      },
+      {
+        server: STATS_SERVER,
+        app: 'encode',
+      },
+      {
+        server: MPD_STATS_SERVER,
+        app: 'live_mpd',
+      },
+      {
+        server: MPD_STATS_SERVER,
+        app: 'live_hls',
+      },
+    ]) {
+      try {
+        const {
+          data: { isLive },
+        } = await axios.get<Stats>(
+          url(this.currentChannel, qualityName.app, qualityName.server),
+        );
+
+        if (isLive) {
+          qualityLive.push(`${qualityName.app}/${this.currentChannel}`);
+        } else {
+          qualityOffline.push(`${qualityName.app}/${this.currentChannel}`);
+        }
+      } catch (error) {
+        qualityOffline.push(`${qualityName.app}/${this.currentChannel}`);
+      }
+    }
+
+    this.channels.online = liveChannels;
+    this.channels.offline = offlineChannels;
+
+    this.channels.qualityLive = qualityLive;
+    this.channels.qualityOffline = qualityOffline;
 
     this.onlineChannels.next(this.channels);
   }
 
-  fetchStats(channel, app, server: string) {
-    if (!channel || !app) {
+  fetchStats(channel: string, app: string, server: string) {
+    if (!channel || !app || !server) {
       this.stats = {};
+
       return;
     }
 

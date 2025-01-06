@@ -51,6 +51,8 @@ export class MinimalComponent implements OnInit, OnDestroy {
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
 
+      this.streamStats.setChannel(this.stream, this.app, this.server);
+
       const [, protocol] = (params.app || '').split('_');
 
       switch (protocol) {
@@ -82,8 +84,6 @@ export class MinimalComponent implements OnInit, OnDestroy {
 
       this.playerInit = false;
       this.initPlayer();
-
-      this.streamStats.setChannel(this.stream, this.app, this.server);
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {

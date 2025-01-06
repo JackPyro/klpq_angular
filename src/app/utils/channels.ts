@@ -95,13 +95,13 @@ export async function createPlayer(
       break;
     }
     default: {
-      // if (isIOS()) {
-      //   const url = await getHlsLink(stream, app);
+      if (isIOS()) {
+        const url = await getHlsLink(stream, app);
 
-      //   stopPlaybackFnc = createNativePlayer(videoElement, url);
+        stopPlaybackFnc = createNativePlayer(videoElement, url);
 
-      //   break;
-      // }
+        break;
+      }
 
       // if (isAndroid()) {
       //   const url = await getMpdLink(stream, app);

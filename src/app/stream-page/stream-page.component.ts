@@ -54,20 +54,6 @@ export class StreamPageComponent implements OnInit, OnDestroy {
       this.app = params.app || 'live';
       this.stream = params.stream || 'main';
 
-      let openedChannelsJson = localStorage.getItem('channels');
-
-      let openedChannels = [];
-
-      if (!openedChannelsJson) {
-        localStorage.setItem('channels', '[]');
-      } else {
-        openedChannels = JSON.parse(openedChannelsJson);
-      }
-
-      openedChannels.push(this.stream);
-
-      localStorage.setItem('channels', JSON.stringify(_.uniq(openedChannels)));
-
       this.showChat = localStorage.getItem('showChat') === 'true';
 
       const [, protocol] = (params.app || '').split('_');
@@ -99,13 +85,13 @@ export class StreamPageComponent implements OnInit, OnDestroy {
         }
       }
 
+      this.streamStats.setChannel(this.stream, this.app, this.server);
+
       this.playerInit = false;
 
       this.initPlayer();
       this.getChatUrl();
       this.getLoginUrl();
-
-      this.streamStats.setChannel(this.stream, this.app, this.server);
     });
 
     this.subscription = this.streamStats.statsSubject.subscribe((stats) => {
